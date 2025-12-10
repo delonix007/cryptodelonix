@@ -1,0 +1,35 @@
+name: Airdrop Update Scraper
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Jalan setiap 6 jam
+  workflow_dispatch: # Supaya bisa dijalankan manual (klik tombol)
+
+jobs:
+  scrape_and_notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Create Firebase Key File
+      env:
+        FIREBASE_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      run: |
+        echo "$FIREBASE_JSON" > firebase_key.json
+
+    - name: Run Scraper Script
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python scraper.py
