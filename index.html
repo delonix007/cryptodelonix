@@ -4,93 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Airdrop Vault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- GLOBAL VARIABLES --- */
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --bg-gradient: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-            --white: #ffffff;
-            --text-main: #2d3748;
-            --text-sub: #718096;
-            --input-bg: #f7fafc;
-            --border: #e2e8f0;
-            --danger: #ff4757;
-            --success: #00b894;
+            /* Warna Utama Senada dengan Background */
+            --primary: #5d5fef;
+            --primary-hover: #4b4dcb;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --danger: #ef4444;
+            --success: #10b981;
+            --input-bg: #f3f4f6;
+            --border: #e5e7eb;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
-            /* Background Gradasi Biru Lembut seperti gambar referensi */
-            background: rgb(135,206,250);
-            background: radial-gradient(circle, rgba(135,206,250,1) 0%, rgba(100,149,237,1) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center; /* Center Vertikal & Horizontal */
             padding: 40px 20px;
+            
+            /* --- TEKNIK MESH GRADIENT (BACKGROUND) --- */
+            background-color: #667eea;
+            background-image: 
+                /* Cahaya Putih di Tengah Atas */
+                radial-gradient(at 50% 0%, hsla(220,100%,90%,0.5) 0px, transparent 50%),
+                /* Cahaya Biru Muda di Kiri Atas */
+                radial-gradient(at 0% 0%, hsla(189,100%,56%,0.4) 0px, transparent 50%),
+                /* Cahaya Ungu di Kanan Bawah */
+                radial-gradient(at 100% 100%, hsla(260,100%,60%,0.4) 0px, transparent 50%),
+                /* Cahaya Biru Tua di Kiri Bawah */
+                radial-gradient(at 0% 100%, hsla(220,100%,40%,0.4) 0px, transparent 50%),
+                /* Base Gradient Linear (Background Dasar) */
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            
+            background-attachment: fixed;
+            background-size: cover;
         }
 
         .container {
             width: 100%;
             max-width: 900px;
-            /* Style Kartu Putih Utama */
-            background: var(--white);
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            
+            /* --- GLASSMORPHISM EFFECT (KARTU UTAMA) --- */
+            background: rgba(255, 255, 255, 0.90); /* Putih transparan 90% */
+            backdrop-filter: blur(20px); /* Efek Blur di belakang kaca */
+            -webkit-backdrop-filter: blur(20px);
+            
+            border-radius: 30px; /* Lengkungan sudut besar seperti referensi */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); /* Soft Shadow */
+            padding: 50px;
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Border tipis transparan */
         }
 
         /* HEADER */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        header { text-align: center; margin-bottom: 40px; }
         header h1 {
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 26px;
+            font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 5px;
+            letter-spacing: -0.5px;
         }
-        header p {
-            color: var(--text-sub);
-            font-size: 14px;
+        header p { color: var(--text-sub); font-size: 14px; margin-top: 5px; }
+        
+        /* LOGO ICON */
+        .logo-icon {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: inline-block;
+            background: rgba(93, 95, 239, 0.1);
+            padding: 15px;
+            border-radius: 16px;
         }
 
-        /* FORM SECTION */
-        .input-section {
-            background: var(--white);
-            margin-bottom: 40px;
-        }
-
+        /* FORM */
+        .input-section { margin-bottom: 40px; }
+        
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
         
-        .form-group { margin-bottom: 15px; }
+        .form-group { margin-bottom: 5px; }
         .form-group.full { grid-column: span 2; }
 
         label {
             display: block;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text-main);
             margin-bottom: 8px;
-            margin-left: 5px;
         }
 
         input, select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 18px;
             background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px; /* Rounded corners seperti gambar */
+            border: 1px solid transparent; /* Border transparan default */
+            border-radius: 12px;
             color: var(--text-main);
             font-size: 14px;
             outline: none;
@@ -98,50 +117,59 @@
         }
 
         input:focus, select:focus {
-            border-color: #667eea;
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1);
         }
-
-        ::placeholder { color: #cbd5e0; }
 
         .btn-save {
             width: 100%;
             padding: 16px;
-            background: #5d5fef; /* Warna tombol biru/ungu */
+            background: var(--primary);
             color: white;
+            font-size: 14px;
             font-weight: 600;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(93, 95, 239, 0.3);
+            margin-top: 10px;
+            box-shadow: 0 10px 20px -10px rgba(93, 95, 239, 0.5);
         }
 
         .btn-save:hover {
+            background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(93, 95, 239, 0.4);
+            box-shadow: 0 15px 25px -10px rgba(93, 95, 239, 0.6);
         }
 
-        /* LIST CARD SECTION */
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 20px;
+        /* CARD LIST */
+        .section-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
         }
-        
+        .section-title { font-weight: 600; color: var(--text-main); }
+        .badge-count { 
+            background: var(--input-bg); 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            color: var(--text-sub); 
+            font-weight: 600;
+        }
+
         .grid-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
         }
 
         .card {
-            background: var(--white);
+            background: #fff;
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
@@ -150,82 +178,50 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-color: #5d5fef;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0,0,0,0.1);
+            border-color: var(--primary);
         }
 
-        .status-dot {
-            height: 8px; width: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        .st-Active { background-color: var(--success); }
+        .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .st-Active { background-color: var(--success); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
         .st-Done { background-color: var(--text-sub); }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+        .card-top { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .keyword-pill { 
+            font-size: 11px; font-weight: 600; 
+            background: rgba(93, 95, 239, 0.08); color: var(--primary); 
+            padding: 4px 10px; border-radius: 8px; 
         }
 
-        .card h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-
-        .keyword-badge {
-            font-size: 11px;
-            background: #f0f4f8;
-            color: #5d5fef;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        .source-info {
-            font-size: 13px;
-            color: var(--text-sub);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .card-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .link-btn {
+        .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: var(--text-main); }
+        .source { font-size: 13px; color: var(--text-sub); display: flex; align-items: center; gap: 5px; margin-bottom: 20px; }
+        
+        .card-btn {
+            display: block;
+            text-align: center;
             text-decoration: none;
+            background: var(--input-bg);
+            color: var(--text-main);
             font-size: 13px;
-            font-weight: 600;
-            color: #5d5fef;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 10px;
             transition: 0.2s;
         }
-        .link-btn:hover { color: #4a4ce6; }
+        .card-btn:hover { background: #eef2ff; color: var(--primary); }
 
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #cbd5e0;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
+        .delete-icon {
+            position: absolute; bottom: 20px; right: 20px;
+            color: #cbd5e1; cursor: pointer; transition: 0.2s; font-size: 14px;
+            background: none; border: none;
         }
-        .delete-btn:hover { color: var(--danger); }
+        .delete-icon:hover { color: var(--danger); transform: scale(1.1); }
 
-        /* Responsive Mobile */
         @media (max-width: 600px) {
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full { grid-column: span 1; }
-            .container { padding: 25px; }
+            .container { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -233,11 +229,9 @@
 
 <div class="container">
     <header>
-        <div style="font-size: 40px; color: #5d5fef; margin-bottom: 10px;">
-            <i class="fas fa-cube"></i>
-        </div>
+        <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
         <h1>Airdrop Vault</h1>
-        <p>Kelola garapan dan notifikasi otomatis Telegram Anda.</p>
+        <p>Managed by Private Bot</p>
     </header>
 
     <div class="input-section">
@@ -247,53 +241,49 @@
                     <label>Nama Project</label>
                     <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
                 </div>
-                
                 <div class="form-group">
                     <label>Keyword Pencarian Bot</label>
                     <input type="text" id="keyword" placeholder="Contoh: Avon" required>
                 </div>
-
                 <div class="form-group">
-                    <label>Username Channel (Tanpa @)</label>
+                    <label>Source (Channel ID)</label>
                     <input type="text" id="source" placeholder="Contoh: airdropfinder" required>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group full">
                     <label>Link Garapan</label>
                     <input type="url" id="link" placeholder="https://..." required>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group full">
                     <label>Status</label>
                     <select id="status">
-                        <option value="Active">Active (Pantau Update)</option>
-                        <option value="Done">Done (Selesai)</option>
+                        <option value="Active">Active (Tracking Update)</option>
+                        <option value="Done">Done (Arsip)</option>
                     </select>
                 </div>
             </div>
-            
-            <button type="submit" class="btn-save">Simpan ke Database</button>
+            <button type="submit" class="btn-save">Simpan Data</button>
         </form>
     </div>
 
-    <div class="section-title">
-        <i class="fas fa-list-ul"></i> Daftar Garapan
+    <div class="section-header">
+        <span class="section-title">Monitoring List</span>
+        <span class="badge-count" id="totalCount">0 Items</span>
     </div>
     
     <div id="gridList" class="grid-list">
-        <div style="text-align:center; width:100%; grid-column: 1/-1; color: #cbd5e0; padding: 40px;">
-            <i class="fas fa-spinner fa-spin"></i> Menghubungkan Firebase...
+        <div style="grid-column:1/-1; text-align:center; padding:40px; color:#9ca3af;">
+            <i class="fas fa-circle-notch fa-spin"></i> Loading data...
         </div>
     </div>
 </div>
 
 <script type="module">
-    // --- 1. CONFIG FIREBASE (WAJIB DIGANTI) ---
+    // --- 1. CONFIG FIREBASE (WAJIB ISI) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // PASTE CONFIG FIREBASE KAMU DISINI
+    // PASTE CONFIG FIREBASE DISINI
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -307,19 +297,18 @@ const firebaseConfig = {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // --- 2. RENDER DATA (Tampilan Kartu Baru) ---
+    // --- 2. RENDER DATA ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
         const grid = document.getElementById('gridList');
+        const countBadge = document.getElementById('totalCount');
+        
         grid.innerHTML = ""; 
+        countBadge.innerText = snapshot.size + " Items";
 
         if(snapshot.empty){
-            grid.innerHTML = `
-                <div style="text-align:center; width:100%; grid-column: 1/-1; color: #a0aec0; padding: 40px;">
-                    <i class="far fa-folder-open" style="font-size:30px; margin-bottom:10px;"></i><br>
-                    Belum ada data garapan.
-                </div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#9ca3af;">Belum ada data.</div>`;
             return;
         }
 
@@ -331,44 +320,26 @@ const firebaseConfig = {
             const card = document.createElement('div');
             card.className = 'card';
             
-            // Tampilan Kartu
             card.innerHTML = `
-                <div class="card-header">
-                    <span class="keyword-badge"><i class="fas fa-robot"></i> ${searchKey}</span>
-                    <div style="font-size:12px; color: ${data.status === 'Active' ? '#00b894' : '#718096'}">
-                        <span class="status-dot ${data.status === 'Active' ? 'st-Active' : 'st-Done'}"></span>
-                        ${data.status}
+                <div class="card-top">
+                    <span class="keyword-pill"><i class="fas fa-search"></i> ${searchKey}</span>
+                    <div style="font-size:12px; color:${data.status === 'Active'?'#10b981':'#6b7280'}">
+                        <span class="status-dot ${data.status === 'Active'?'st-Active':'st-Done'}"></span>${data.status}
                     </div>
                 </div>
-                
                 <h3>${data.name}</h3>
-                
-                <div class="source-info">
-                    <i class="fab fa-telegram-plane" style="color:#0088cc"></i> 
-                    <span>@${data.source}</span>
-                </div>
-
-                <div class="card-actions">
-                    <a href="${data.link}" target="_blank" class="link-btn">
-                        Open Project <i class="fas fa-arrow-right" style="font-size:10px; margin-left:5px;"></i>
-                    </a>
-                </div>
+                <div class="source"><i class="fab fa-telegram"></i> @${data.source}</div>
+                <a href="${data.link}" target="_blank" class="card-btn">Buka Link</a>
             `;
 
-            // Tombol Hapus (Dibuat terpisah agar event listener aman)
+            // Tombol Hapus
             const delBtn = document.createElement('button');
-            delBtn.className = 'delete-btn';
-            delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus";
-            
-            // Masukkan tombol hapus ke dalam actions
-            card.querySelector('.card-actions').appendChild(delBtn);
-
-            delBtn.addEventListener('click', async () => {
-                if(confirm(`Yakin ingin menghapus ${data.name}?`)) {
-                    await deleteDoc(doc(db, "airdrops", docId));
-                }
-            });
+            delBtn.className = 'delete-icon';
+            delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            delBtn.onclick = async () => {
+                if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
+            };
+            card.appendChild(delBtn);
 
             grid.appendChild(card);
         });
@@ -378,11 +349,8 @@ const firebaseConfig = {
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
-        const originalText = btn.innerHTML;
-        
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-        btn.disabled = true;
-        btn.style.opacity = "0.7";
+        const originalText = btn.innerText;
+        btn.innerText = 'Menyimpan...'; btn.disabled = true;
 
         try {
             await addDoc(collection(db, "airdrops"), {
@@ -396,13 +364,9 @@ const firebaseConfig = {
                 tracked_msg_id: null 
             });
             e.target.reset();
-        } catch(err) {
-            alert("Error: " + err.message);
-        }
+        } catch(err) { alert(err.message); }
 
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        btn.style.opacity = "1";
+        btn.innerText = originalText; btn.disabled = false;
     });
 </script>
 
