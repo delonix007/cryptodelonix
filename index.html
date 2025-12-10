@@ -3,47 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Airdrop Tracker</title>
+    <title>Crypto Airdrop Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root{--bg:#0b0c15;--card:#161823;--primary:#00ffc3;--sec:#9d4edd;--text:#fff;--border:#2a2d3e;}
-        *{box-sizing:border-box;font-family:'Space Grotesk',sans-serif}
-        body{background:var(--bg);color:var(--text);padding:20px;margin:0}
-        .container{max-width:1000px;margin:0 auto}
-        h1 span{color:var(--primary)}
-        input,select,button{width:100%;padding:12px;margin:5px 0;background:var(--bg);border:1px solid var(--border);color:#fff;border-radius:8px}
-        button{background:var(--primary);color:#000;font-weight:bold;cursor:pointer;border:none}
-        .card{background:var(--card);padding:15px;margin-bottom:15px;border-radius:10px;border:1px solid var(--border);position:relative}
-        .badge{position:absolute;top:15px;right:15px;padding:3px 10px;border-radius:15px;font-size:12px;font-weight:bold}
-        .active{background:rgba(0,255,195,0.2);color:var(--primary)}
-        .done{background:rgba(157,78,221,0.2);color:var(--sec)}
+        :root {
+            --bg: #0b0c15; --card: #161823; --primary: #00ffc3; 
+            --sec: #9d4edd; --danger: #ff4757; --text: #fff; --border: #2a2d3e;
+        }
+        * { box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        h1 { margin: 0; font-size: 24px; }
+        h1 span { color: var(--primary); }
+
+        /* Form */
+        .input-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 10px; background: #0f111a; border: 1px solid var(--border); color: #fff; border-radius: 8px; outline: none; }
+        input:focus { border-color: var(--primary); }
+        button.save-btn { width: 100%; padding: 12px; background: var(--primary); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        button.save-btn:hover { opacity: 0.9; }
+
+        /* List Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        
+        .card { 
+            background: var(--card); padding: 20px; border-radius: 12px; 
+            border: 1px solid var(--border); position: relative; 
+            transition: transform 0.2s;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-3px); }
+
+        .card h3 { margin: 0 0 5px 0; font-size: 18px; padding-right: 30px; } /* Space for trash icon */
+        .card p { color: #aaa; font-size: 13px; margin: 5px 0 15px 0; }
+        
+        .badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; font-weight: bold; }
+        .st-Active { background: rgba(0, 255, 195, 0.15); color: var(--primary); }
+        .st-Done { background: rgba(157, 78, 221, 0.15); color: var(--sec); }
+
+        .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .link-btn { color: var(--primary); text-decoration: none; font-size: 14px; }
+        .link-btn:hover { text-decoration: underline; }
+
+        /* Delete Button */
+        .delete-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: transparent; border: none; color: #555;
+            cursor: pointer; font-size: 16px; transition: 0.2s;
+        }
+        .delete-btn:hover { color: var(--danger); transform: scale(1.1); }
+
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>My<span>Airdrop</span></h1>
-    
-    <div class="card">
-        <h3>Tambah Garapan</h3>
+    <header>
+        <h1>Airdrop<span>Manager</span></h1>
+        <div style="font-size:12px; color:#777"><i class="fas fa-database"></i> Connected</div>
+    </header>
+
+    <div class="input-card">
+        <h3 style="margin-top:0">Tambah Target Baru</h3>
         <form id="addForm">
             <input type="text" id="name" placeholder="Nama Project (ex: LayerZero)" required>
-            <input type="text" id="source" placeholder="Username Channel Telegram (ex: airdropfinder)" required>
-            <input type="url" id="link" placeholder="Link Spreadsheet/Web" required>
-            <select id="status"><option value="Active">Active</option><option value="Done">Done</option></select>
-            <button type="submit">Simpan</button>
+            <input type="text" id="source" placeholder="Username Channel (tanpa @, ex: airdropfinder)" required>
+            <input type="url" id="link" placeholder="Link Garapan / Spreadsheet" required>
+            <select id="status">
+                <option value="Active">Active (Pantau Update)</option>
+                <option value="Done">Done (Selesai)</option>
+            </select>
+            <button type="submit" class="save-btn"><i class="fas fa-save"></i> Simpan Data</button>
         </form>
     </div>
 
-    <div id="list">Loading data...</div>
+    <h3 style="border-left: 4px solid var(--primary); padding-left: 10px;">Daftar Garapan</h3>
+    <div id="gridList" class="grid">
+        <div style="color:#777">Memuat data...</div>
+    </div>
 </div>
 
 <script type="module">
+    // --- 1. CONFIG FIREBASE (WAJIB DIGANTI) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } 
+    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // --- GANTI DENGAN CONFIG FIREBASE KAMU DI SINI ---
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -54,47 +103,90 @@ const firebaseConfig = {
   measurementId: "G-BSSFE27WZ5"
 };
 
+    // Initialize
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Menambah Data
+    // --- 2. FUNGSI MENAMPILKAN DATA ---
+    const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+        const grid = document.getElementById('gridList');
+        grid.innerHTML = ""; // Bersihkan list sebelum render ulang
+
+        if(snapshot.empty){
+            grid.innerHTML = "<p style='color:#777'>Belum ada data garapan.</p>";
+            return;
+        }
+
+        snapshot.forEach((documentSnapshot) => {
+            const data = documentSnapshot.data();
+            const docId = documentSnapshot.id; // Kita butuh ID ini untuk hapus data
+
+            // Buat Element Card
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <span class="badge st-${data.status}">${data.status}</span>
+                <h3>${data.name}</h3>
+                <p><i class="fab fa-telegram"></i> @${data.source}</p>
+                
+                <div class="actions">
+                    <a href="${data.link}" target="_blank" class="link-btn">
+                        Buka Link <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            `;
+
+            // Buat Tombol Delete Terpisah (agar event listener aman)
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn';
+            delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            delBtn.title = "Hapus Garapan";
+            
+            // Logika Hapus Data
+            delBtn.addEventListener('click', async () => {
+                if(confirm(`Yakin ingin menghapus ${data.name}?`)) {
+                    try {
+                        await deleteDoc(doc(db, "airdrops", docId));
+                        // Tidak perlu refresh, onSnapshot otomatis update tampilan
+                    } catch (err) {
+                        alert("Gagal menghapus: " + err.message);
+                    }
+                }
+            });
+
+            card.appendChild(delBtn);
+            grid.appendChild(card);
+        });
+    });
+
+    // --- 3. FUNGSI TAMBAH DATA ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const btn = e.target.querySelector('button');
-        btn.innerText = "Menyimpan...";
-        
+        const btn = document.querySelector('.save-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Menyimpan...';
+        btn.disabled = true;
+
         try {
             await addDoc(collection(db, "airdrops"), {
                 name: document.getElementById('name').value,
-                source: document.getElementById('source').value.replace('@', ''), // Hapus @ jika ada
+                source: document.getElementById('source').value.replace('@','').trim(),
                 link: document.getElementById('link').value,
                 status: document.getElementById('status').value,
-                createdAt: new Date()
+                createdAt: new Date(),
+                last_message_snippet: "" // Field kosong untuk inisialisasi scraper
             });
             e.target.reset();
-            alert("Berhasil disimpan!");
-        } catch(err) { alert("Error: " + err.message); }
-        btn.innerText = "Simpan";
+        } catch(err) {
+            alert("Error: " + err.message);
+        }
+
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     });
 
-    // Menampilkan Data Realtime
-    const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-        const listDiv = document.getElementById('list');
-        listDiv.innerHTML = "";
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const el = document.createElement('div');
-            el.className = 'card';
-            el.innerHTML = `
-                <span class="badge ${data.status === 'Active' ? 'active' : 'done'}">${data.status}</span>
-                <h3>${data.name}</h3>
-                <p><i class="fab fa-telegram"></i> Sumber: @${data.source}</p>
-                <a href="${data.link}" target="_blank" style="color:var(--primary)">Buka Link</a>
-            `;
-            listDiv.appendChild(el);
-        });
-    });
 </script>
 </body>
 </html>
