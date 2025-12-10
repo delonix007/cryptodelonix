@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Airdrop Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root{--bg:#0b0c15;--card:#161823;--primary:#00ffc3;--sec:#9d4edd;--text:#fff;--border:#2a2d3e;}
+        *{box-sizing:border-box;font-family:'Space Grotesk',sans-serif}
+        body{background:var(--bg);color:var(--text);padding:20px;margin:0}
+        .container{max-width:1000px;margin:0 auto}
+        h1 span{color:var(--primary)}
+        input,select,button{width:100%;padding:12px;margin:5px 0;background:var(--bg);border:1px solid var(--border);color:#fff;border-radius:8px}
+        button{background:var(--primary);color:#000;font-weight:bold;cursor:pointer;border:none}
+        .card{background:var(--card);padding:15px;margin-bottom:15px;border-radius:10px;border:1px solid var(--border);position:relative}
+        .badge{position:absolute;top:15px;right:15px;padding:3px 10px;border-radius:15px;font-size:12px;font-weight:bold}
+        .active{background:rgba(0,255,195,0.2);color:var(--primary)}
+        .done{background:rgba(157,78,221,0.2);color:var(--sec)}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>My<span>Airdrop</span></h1>
+    
+    <div class="card">
+        <h3>Tambah Garapan</h3>
+        <form id="addForm">
+            <input type="text" id="name" placeholder="Nama Project (ex: LayerZero)" required>
+            <input type="text" id="source" placeholder="Username Channel Telegram (ex: airdropfinder)" required>
+            <input type="url" id="link" placeholder="Link Spreadsheet/Web" required>
+            <select id="status"><option value="Active">Active</option><option value="Done">Done</option></select>
+            <button type="submit">Simpan</button>
+        </form>
+    </div>
+
+    <div id="list">Loading data...</div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } 
+    from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // --- GANTI DENGAN CONFIG FIREBASE KAMU DI SINI ---
+const firebaseConfig = {
+  apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
+  authDomain: "cryptodelonix.firebaseapp.com",
+  projectId: "cryptodelonix",
+  storageBucket: "cryptodelonix.firebasestorage.app",
+  messagingSenderId: "265190187840",
+  appId: "1:265190187840:web:86be6be1e4eac1aa70d0a5",
+  measurementId: "G-BSSFE27WZ5"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Menambah Data
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        btn.innerText = "Menyimpan...";
+        
+        try {
+            await addDoc(collection(db, "airdrops"), {
+                name: document.getElementById('name').value,
+                source: document.getElementById('source').value.replace('@', ''), // Hapus @ jika ada
+                link: document.getElementById('link').value,
+                status: document.getElementById('status').value,
+                createdAt: new Date()
+            });
+            e.target.reset();
+            alert("Berhasil disimpan!");
+        } catch(err) { alert("Error: " + err.message); }
+        btn.innerText = "Simpan";
+    });
+
+    // Menampilkan Data Realtime
+    const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+        const listDiv = document.getElementById('list');
+        listDiv.innerHTML = "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const el = document.createElement('div');
+            el.className = 'card';
+            el.innerHTML = `
+                <span class="badge ${data.status === 'Active' ? 'active' : 'done'}">${data.status}</span>
+                <h3>${data.name}</h3>
+                <p><i class="fab fa-telegram"></i> Sumber: @${data.source}</p>
+                <a href="${data.link}" target="_blank" style="color:var(--primary)">Buka Link</a>
+            `;
+            listDiv.appendChild(el);
+        });
+    });
+</script>
+</body>
+</html>
