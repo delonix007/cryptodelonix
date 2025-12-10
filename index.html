@@ -75,14 +75,15 @@
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "GANTI_API_KEY",
-        authDomain: "GANTI_PROJECT_ID.firebaseapp.com",
-        projectId: "GANTI_PROJECT_ID",
-        storageBucket: "GANTI_PROJECT_ID.appspot.com",
-        messagingSenderId: "GANTI_SENDER_ID",
-        appId: "GANTI_APP_ID"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
+  authDomain: "cryptodelonix.firebaseapp.com",
+  projectId: "cryptodelonix",
+  storageBucket: "cryptodelonix.firebasestorage.app",
+  messagingSenderId: "265190187840",
+  appId: "1:265190187840:web:86be6be1e4eac1aa70d0a5",
+  measurementId: "G-BSSFE27WZ5"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
