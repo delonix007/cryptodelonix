@@ -3,78 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Delonix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Airdrop Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --bg: #0b0c15; --card: #161823; --primary: #00ffc3; --sec: #9d4edd; --danger: #ff4757; --text: #fff; --border: #2a2d3e; }
-        * { box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
-        .container { max-width: 900px; margin: 0 auto; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        h1 span { color: var(--primary); }
+        /* --- GLOBAL VARIABLES --- */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-gradient: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            --white: #ffffff;
+            --text-main: #2d3748;
+            --text-sub: #718096;
+            --input-bg: #f7fafc;
+            --border: #e2e8f0;
+            --danger: #ff4757;
+            --success: #00b894;
+        }
 
-        .input-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
-        input, select { width: 100%; padding: 12px; margin-bottom: 10px; background: #0f111a; border: 1px solid var(--border); color: #fff; border-radius: 8px; outline: none; }
-        input:focus { border-color: var(--primary); }
-        button.save-btn { width: 100%; padding: 12px; background: var(--primary); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); position: relative; transition: transform 0.2s; }
-        .card:hover { border-color: var(--primary); transform: translateY(-3px); }
-        .card h3 { margin: 0 0 5px 0; font-size: 18px; padding-right: 30px; }
-        
-        .badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; font-weight: bold; }
-        .st-Active { background: rgba(0, 255, 195, 0.15); color: var(--primary); }
-        .st-Done { background: rgba(157, 78, 221, 0.15); color: var(--sec); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-        .keyword-tag { font-size: 11px; color: #888; display: block; margin-bottom: 5px; font-style: italic;}
+        body {
+            /* Background Gradasi Biru Lembut seperti gambar referensi */
+            background: rgb(135,206,250);
+            background: radial-gradient(circle, rgba(135,206,250,1) 0%, rgba(100,149,237,1) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            /* Style Kartu Putih Utama */
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            position: relative;
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+        header p {
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+
+        /* FORM SECTION */
+        .input-section {
+            background: var(--white);
+            margin-bottom: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
         
-        .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .link-btn { color: var(--primary); text-decoration: none; font-size: 14px; }
-        .delete-btn { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #555; cursor: pointer; font-size: 16px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group.full { grid-column: span 2; }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            margin-left: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px; /* Rounded corners seperti gambar */
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        ::placeholder { color: #cbd5e0; }
+
+        .btn-save {
+            width: 100%;
+            padding: 16px;
+            background: #5d5fef; /* Warna tombol biru/ungu */
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(93, 95, 239, 0.3);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(93, 95, 239, 0.4);
+        }
+
+        /* LIST CARD SECTION */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-color: #5d5fef;
+        }
+
+        .status-dot {
+            height: 8px; width: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .st-Active { background-color: var(--success); }
+        .st-Done { background-color: var(--text-sub); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .keyword-badge {
+            font-size: 11px;
+            background: #f0f4f8;
+            color: #5d5fef;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .source-info {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-btn {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5d5fef;
+            transition: 0.2s;
+        }
+        .link-btn:hover { color: #4a4ce6; }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #cbd5e0;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
         .delete-btn:hover { color: var(--danger); }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+            .container { padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Airdrop<span>Manager</span></h1>
-        <div style="font-size:12px; color:#777"><i class="fas fa-database"></i> Connected</div>
+        <div style="font-size: 40px; color: #5d5fef; margin-bottom: 10px;">
+            <i class="fas fa-cube"></i>
+        </div>
+        <h1>Airdrop Vault</h1>
+        <p>Kelola garapan dan notifikasi otomatis Telegram Anda.</p>
     </header>
 
-    <div class="input-card">
-        <h3 style="margin-top:0">Tambah Target Baru</h3>
+    <div class="input-section">
         <form id="addForm">
-            <input type="text" id="name" placeholder="Nama Lengkap Project (ex: Avon Public Testnet)" required>
-            
-            <input type="text" id="keyword" placeholder="Kata Kunci Bot (ex: Avon)" required style="border-color: var(--sec);">
-            <small style="color:#777; display:block; margin-bottom:10px;">*Bot akan mencari kata ini di Telegram.</small>
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Nama Project</label>
+                    <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Keyword Pencarian Bot</label>
+                    <input type="text" id="keyword" placeholder="Contoh: Avon" required>
+                </div>
 
-            <input type="text" id="source" placeholder="Username Channel (tanpa @)" required>
-            <input type="url" id="link" placeholder="Link Garapan" required>
-            <select id="status">
-                <option value="Active">Active</option>
-                <option value="Done">Done</option>
-            </select>
-            <button type="submit" class="save-btn"><i class="fas fa-save"></i> Simpan Data</button>
+                <div class="form-group">
+                    <label>Username Channel (Tanpa @)</label>
+                    <input type="text" id="source" placeholder="Contoh: airdropfinder" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Link Garapan</label>
+                    <input type="url" id="link" placeholder="https://..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Active">Active (Pantau Update)</option>
+                        <option value="Done">Done (Selesai)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-save">Simpan ke Database</button>
         </form>
     </div>
 
-    <div id="gridList" class="grid">
-        <div style="color:#777">Memuat data...</div>
+    <div class="section-title">
+        <i class="fas fa-list-ul"></i> Daftar Garapan
+    </div>
+    
+    <div id="gridList" class="grid-list">
+        <div style="text-align:center; width:100%; grid-column: 1/-1; color: #cbd5e0; padding: 40px;">
+            <i class="fas fa-spinner fa-spin"></i> Menghubungkan Firebase...
+        </div>
     </div>
 </div>
 
 <script type="module">
-    // --- CONFIG FIREBASE ---
+    // --- 1. CONFIG FIREBASE (WAJIB DIGANTI) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+    // PASTE CONFIG FIREBASE KAMU DISINI
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -88,66 +307,104 @@ const firebaseConfig = {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // --- MENAMPILKAN DATA ---
+    // --- 2. RENDER DATA (Tampilan Kartu Baru) ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
         const grid = document.getElementById('gridList');
         grid.innerHTML = ""; 
 
-        if(snapshot.empty){ grid.innerHTML = "<p>Belum ada data.</p>"; return; }
+        if(snapshot.empty){
+            grid.innerHTML = `
+                <div style="text-align:center; width:100%; grid-column: 1/-1; color: #a0aec0; padding: 40px;">
+                    <i class="far fa-folder-open" style="font-size:30px; margin-bottom:10px;"></i><br>
+                    Belum ada data garapan.
+                </div>`;
+            return;
+        }
 
         snapshot.forEach((documentSnapshot) => {
             const data = documentSnapshot.data();
             const docId = documentSnapshot.id;
-            
-            // Fallback jika data lama tidak punya keyword
-            const searchKey = data.search_keyword || data.name; 
+            const searchKey = data.search_keyword || data.name;
 
             const card = document.createElement('div');
             card.className = 'card';
+            
+            // Tampilan Kartu
             card.innerHTML = `
-                <span class="badge st-${data.status}">${data.status}</span>
+                <div class="card-header">
+                    <span class="keyword-badge"><i class="fas fa-robot"></i> ${searchKey}</span>
+                    <div style="font-size:12px; color: ${data.status === 'Active' ? '#00b894' : '#718096'}">
+                        <span class="status-dot ${data.status === 'Active' ? 'st-Active' : 'st-Done'}"></span>
+                        ${data.status}
+                    </div>
+                </div>
+                
                 <h3>${data.name}</h3>
-                <span class="keyword-tag"><i class="fas fa-search"></i> Keyword: "${searchKey}"</span>
-                <p><i class="fab fa-telegram"></i> @${data.source}</p>
-                <div class="actions">
-                    <a href="${data.link}" target="_blank" class="link-btn">Buka Link <i class="fas fa-external-link-alt"></i></a>
+                
+                <div class="source-info">
+                    <i class="fab fa-telegram-plane" style="color:#0088cc"></i> 
+                    <span>@${data.source}</span>
+                </div>
+
+                <div class="card-actions">
+                    <a href="${data.link}" target="_blank" class="link-btn">
+                        Open Project <i class="fas fa-arrow-right" style="font-size:10px; margin-left:5px;"></i>
+                    </a>
                 </div>
             `;
 
+            // Tombol Hapus (Dibuat terpisah agar event listener aman)
             const delBtn = document.createElement('button');
             delBtn.className = 'delete-btn';
-            delBtn.innerHTML = '<i class="fas fa-trash"></i>';
-            delBtn.onclick = async () => {
-                if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
-            };
-            card.appendChild(delBtn);
+            delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            delBtn.title = "Hapus";
+            
+            // Masukkan tombol hapus ke dalam actions
+            card.querySelector('.card-actions').appendChild(delBtn);
+
+            delBtn.addEventListener('click', async () => {
+                if(confirm(`Yakin ingin menghapus ${data.name}?`)) {
+                    await deleteDoc(doc(db, "airdrops", docId));
+                }
+            });
+
             grid.appendChild(card);
         });
     });
 
-    // --- TAMBAH DATA ---
+    // --- 3. SUBMIT DATA ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const btn = document.querySelector('.save-btn');
-        btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
+        const btn = document.querySelector('.btn-save');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
 
         try {
             await addDoc(collection(db, "airdrops"), {
                 name: document.getElementById('name').value,
-                search_keyword: document.getElementById('keyword').value.trim(), // Simpan keyword
+                search_keyword: document.getElementById('keyword').value.trim(),
                 source: document.getElementById('source').value.replace('@','').trim(),
                 link: document.getElementById('link').value,
                 status: document.getElementById('status').value,
                 createdAt: new Date(),
-                last_message_snippet: "" 
+                last_message_snippet: "", 
+                tracked_msg_id: null 
             });
             e.target.reset();
-        } catch(err) { alert("Error: " + err.message); }
+        } catch(err) {
+            alert("Error: " + err.message);
+        }
 
-        btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; btn.disabled = false;
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        btn.style.opacity = "1";
     });
 </script>
+
 </body>
 </html>
