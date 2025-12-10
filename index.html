@@ -3,214 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop Vault - iOS Style</title>
+    <title>Airdrop Vault - Liquid Glass</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --primary: #2563eb; /* Royal Blue */
-            --primary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            /* Palette iOS 18 Liquid */
+            --primary-grad: linear-gradient(135deg, #3b82f6, #06b6d4); /* Biru ke Cyan */
+            --glass-bg-main: rgba(255, 255, 255, 0.15); /* Sangat transparan */
+            --glass-bg-input: rgba(255, 255, 255, 0.08);
+            --glass-bg-card: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            
+            --text-light: #ffffff;
+            --text-dim: #cbd5e1;
             --danger: #ef4444;
-            --text-main: #1e293b;
-            --text-sub: #64748b;
+            --danger-glass: rgba(239, 68, 68, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display: flex; justify-content: center; align-items: center; padding: 20px;
+            background-color: #0f172a; /* Warna dasar gelap */
             
-            /* --- LIQUID MESH GRADIENT BACKGROUND --- */
-            /* Ini meniru gaya iPhone/Peppo dengan gradasi dinamis */
-            background-color: #0f172a;
+            /* --- LIQUID MESH BACKGROUND --- */
+            /* Ini menciptakan efek cairan bergerak dengan banyak lapisan warna */
             background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 0% 100%, hsla(192,100%,40%,1) 0, transparent 50%), 
-                radial-gradient(at 80% 100%, hsla(270,100%,60%,1) 0, transparent 50%), 
-                radial-gradient(at 0% 50%, hsla(200,100%,30%,1) 0, transparent 50%);
-            background-size: 150% 150%;
-            /* Animasi agar background terlihat "hidup" seperti liquid */
-            animation: liquidMove 20s ease infinite;
+                radial-gradient(at 10% 20%, hsla(215, 98%, 61%, 0.6) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, hsla(190, 100%, 50%, 0.6) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, hsla(258, 90%, 66%, 0.4) 0px, transparent 50%),
+                radial-gradient(at 80% 10%, hsla(340, 100%, 76%, 0.4) 0px, transparent 50%),
+                radial-gradient(at 20% 90%, hsla(200, 100%, 50%, 0.5) 0px, transparent 50%);
+            background-size: 180% 180%;
+            animation: liquidFlow 25s ease infinite alternate;
         }
 
-        @keyframes liquidMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes liquidFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         .container {
-            width: 100%;
-            max-width: 850px;
-            
-            /* --- GLASSMORPHISM CARD (iOS 18 Style) --- */
-            background: rgba(255, 255, 255, 0.85); /* Putih semi transparan */
-            backdrop-filter: blur(40px) saturate(180%); /* Efek blur kuat */
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            
+            width: 100%; max-width: 800px;
+            /* --- MAIN GLASS CARD --- */
+            background: var(--glass-bg-main);
+            /* Efek blur sangat kuat + saturasi tinggi agar warna di belakang 'pop' */
+            backdrop-filter: blur(50px) saturate(150%);
+            -webkit-backdrop-filter: blur(50px) saturate(150%);
             border: 1px solid var(--glass-border);
-            border-radius: 32px; /* Sudut sangat bulat */
+            border-radius: 36px;
             padding: 40px;
-            box-shadow: 
-                0 20px 50px -12px rgba(0, 0, 0, 0.25), /* Shadow dalam */
-                0 0 0 1px rgba(255, 255, 255, 0.3) inset; /* Border dalam */
+            box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255,255,255,0.1);
         }
 
         /* HEADER */
-        header { text-align: center; margin-bottom: 35px; }
+        header { text-align: center; margin-bottom: 35px; color: var(--text-light); }
         .logo-box {
-            width: 60px; height: 60px;
-            background: var(--primary-gradient);
-            border-radius: 18px;
+            width: 64px; height: 64px; margin: 0 auto 15px;
+            background: var(--primary-grad); border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px auto;
-            color: white; font-size: 24px;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+            font-size: 28px; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
         }
-        h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
-        p { color: var(--text-sub); font-size: 14px; margin-top: 5px; }
+        h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        p { color: var(--text-dim); margin-top: 8px; }
 
-        /* FORM STYLING */
-        .input-group { margin-bottom: 25px; }
-        
-        .form-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; 
-        }
+        /* FORM */
+        .input-group { margin-bottom: 30px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .full-width { grid-column: span 2; }
 
-        label {
-            display: block; font-size: 12px; font-weight: 600; 
-            color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        label { 
+            display: block; font-size: 13px; font-weight: 500; color: var(--text-dim); 
+            margin-bottom: 10px; margin-left: 5px;
         }
 
         input, select {
-            width: 100%; padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 14px; color: var(--text-main);
-            transition: all 0.3s ease;
-            outline: none;
+            width: 100%; padding: 16px;
+            /* Input adalah "lubang kaca" yang lebih gelap */
+            background: var(--glass-bg-input);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            color: var(--text-light); font-size: 15px; outline: none;
+            transition: 0.3s;
         }
-
+        input::placeholder { color: rgba(255,255,255,0.4); }
         input:focus, select:focus {
-            background: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
         }
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; }
 
         .btn-save {
-            width: 100%; padding: 16px;
-            background: var(--primary-gradient);
-            color: white; font-weight: 600; border: none;
-            border-radius: 16px; cursor: pointer;
-            font-size: 15px; letter-spacing: 0.5px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 8px 20px -5px rgba(37, 99, 235, 0.4);
+            width: 100%; padding: 18px; margin-top: 10px;
+            background: var(--primary-grad);
+            color: white; font-weight: 700; font-size: 16px;
+            border: none; border-radius: 20px; cursor: pointer;
+            box-shadow: 0 15px 30px -10px rgba(59, 130, 246, 0.6);
+            transition: 0.3s;
         }
-        .btn-save:hover { transform: scale(1.01); box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.5); }
-        .btn-save:active { transform: scale(0.98); }
+        .btn-save:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.8); }
 
-        /* LIST & CARDS */
-        .divider {
-            height: 1px; background: linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent);
-            margin: 40px 0 25px 0;
+        /* LIST SECTION */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin: 40px 0 20px; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+        .section-title { font-size: 18px; font-weight: 600; color: var(--text-light); }
+        .badge-count { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 30px; color: var(--text-dim); font-size: 13px; }
 
-        .grid-list {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
-        }
+        .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
         .card {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
+            /* Kartu list lebih terang daripada background utama */
+            background: var(--glass-bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
             padding: 20px;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             display: flex; flex-direction: column;
-            position: relative;
-            overflow: hidden;
         }
-        
-        .card:hover {
-            background: #fff;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+        .card:hover { 
+            transform: translateY(-5px); 
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.3);
         }
 
-        /* Status Indicator Dot */
-        .status-dot {
-            height: 8px; width: 8px; border-radius: 50%;
-            display: inline-block; margin-right: 6px;
-        }
-        .st-Active { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
-        .st-Done { background: #cbd5e1; }
+        .card-top { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .keyword-pill { background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .st-Active { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+        .st-Done { background: #94a3b8; }
 
-        .card-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-        }
-        
-        .keyword-badge {
-            font-size: 11px; font-weight: 600;
-            color: var(--primary); background: rgba(37, 99, 235, 0.08);
-            padding: 4px 10px; border-radius: 12px;
-        }
+        .card h3 { color: var(--text-light); margin-bottom: 8px; font-size: 17px; }
+        .source { color: var(--text-dim); font-size: 13px; flex-grow: 1; margin-bottom: 25px; }
 
-        .card h3 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-        .source { font-size: 13px; color: var(--text-sub); display: flex; align-items: center; gap: 5px; flex-grow: 1; margin-bottom: 20px;}
-
-        /* --- PERBAIKAN TOMBOL (FLEXBOX FIX) --- */
-        .action-row {
-            display: flex;
-            gap: 12px; /* Jarak antar tombol */
-            margin-top: auto; /* Dorong ke bawah mentok */
-        }
-
+        /* ACTION ROW (TOMBOL SEJAJAR) */
+        .action-row { display: flex; gap: 12px; }
         .btn-link {
-            flex: 1; /* Memenuhi sisa ruang yang ada */
-            text-decoration: none;
-            background: #eff6ff;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 13px;
-            padding: 12px;
-            border-radius: 12px;
-            text-align: center;
-            transition: 0.2s;
+            flex: 1; text-decoration: none; text-align: center;
+            background: rgba(255, 255, 255, 0.1); color: var(--text-light);
+            padding: 14px; border-radius: 16px; font-weight: 600; font-size: 14px;
+            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
         }
-        .btn-link:hover { background: #dbeafe; }
-
+        .btn-link:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255,255,255,0.3); }
+        
         .btn-delete {
-            width: 44px; /* Lebar Tetap */
-            height: 44px; /* Tinggi sama */
-            flex-shrink: 0; /* Jangan menyusut */
-            border: none;
-            border-radius: 12px;
-            background: #fef2f2;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 16px;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.2s;
+            width: 48px; height: 48px; flex-shrink: 0;
+            background: var(--danger-glass); color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px; font-size: 18px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
         }
-        .btn-delete:hover { background: #fee2e2; transform: scale(1.05); }
+        .btn-delete:hover { background: rgba(239, 68, 68, 0.4); transform: scale(1.05); }
 
-        /* Loading State */
-        .loading-state { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-sub); }
-
+        /* RESPONSIVE */
         @media (max-width: 600px) {
             .form-grid { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
-            .container { padding: 25px; border-radius: 24px; }
+            .container { padding: 25px; border-radius: 28px; }
+            body { padding: 15px; }
         }
     </style>
 </head>
@@ -218,69 +176,60 @@
 
 <div class="container">
     <header>
-        <div class="logo-box">
-            <i class="fas fa-cube"></i>
-        </div>
+        <div class="logo-box"><i class="fas fa-layer-group"></i></div>
         <h1>Airdrop Vault</h1>
-        <p>Private Automation Dashboard</p>
+        <p>Managed by Private Bot</p>
     </header>
 
-    <form id="addForm" class="input-group">
-        <div class="form-grid">
-            <div class="full-width">
-                <label>Nama Project</label>
-                <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
+    <div class="input-group">
+        <form id="addForm">
+            <div class="form-grid">
+                <div class="full-width">
+                    <label>Nama Project</label>
+                    <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
+                </div>
+                <div>
+                    <label>Keyword Bot</label>
+                    <input type="text" id="keyword" placeholder="Contoh: Avon" required>
+                </div>
+                <div>
+                    <label>Source ID</label>
+                    <input type="text" id="source" placeholder="airdropfinder" required>
+                </div>
+                <div class="full-width">
+                    <label>Link Garapan</label>
+                    <input type="url" id="link" placeholder="https://..." required>
+                </div>
+                <div class="full-width">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Active" style="color:black">Active (Tracking)</option>
+                        <option value="Done" style="color:black">Done (Arsip)</option>
+                    </select>
+                </div>
             </div>
-            
-            <div>
-                <label>Keyword Bot</label>
-                <input type="text" id="keyword" placeholder="Contoh: Avon" required>
-            </div>
+            <button type="submit" class="btn-save">Simpan Data</button>
+        </form>
+    </div>
 
-            <div>
-                <label>Source (Channel)</label>
-                <input type="text" id="source" placeholder="Contoh: airdropfinder" required>
-            </div>
-
-            <div class="full-width">
-                <label>Link Garapan</label>
-                <input type="url" id="link" placeholder="https://..." required>
-            </div>
-
-            <div class="full-width">
-                <label>Status</label>
-                <select id="status">
-                    <option value="Active">Active (Tracking Update)</option>
-                    <option value="Done">Done (Arsip)</option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="btn-save" style="margin-top: 15px;">
-            Simpan Data
-        </button>
-    </form>
-
-    <div class="divider"></div>
-
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="font-size:16px; color:var(--text-main);">Monitoring List</h3>
-        <span id="totalCount" style="font-size:12px; background:#f1f5f9; padding:4px 10px; border-radius:10px; color:#64748b;">0 Items</span>
+    <div class="section-header">
+        <span class="section-title">Monitoring List</span>
+        <span class="badge-count" id="totalCount">0 Items</span>
     </div>
     
     <div id="gridList" class="grid-list">
-        <div class="loading-state">
-            <i class="fas fa-spinner fa-spin"></i> Menghubungkan...
+        <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-dim);">
+            <i class="fas fa-circle-notch fa-spin"></i> Menghubungkan...
         </div>
     </div>
 </div>
 
 <script type="module">
-    // --- FIREBASE CONFIGURATION ---
+    // --- CONFIG FIREBASE (JANGAN LUPA ISI API KEY) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // ⚠️ PASTE API KEY KAMU DI SINI ⚠️
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -301,11 +250,10 @@ const firebaseConfig = {
         const grid = document.getElementById('gridList');
         const badge = document.getElementById('totalCount');
         
-        grid.innerHTML = "";
-        badge.innerText = snapshot.size + " Items";
+        grid.innerHTML = ""; badge.innerText = snapshot.size + " Items";
 
         if(snapshot.empty){
-            grid.innerHTML = `<div class="loading-state">Belum ada data tersimpan.</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-dim);">Belum ada data.</div>`;
             return;
         }
 
@@ -318,49 +266,39 @@ const firebaseConfig = {
             card.className = 'card';
             
             card.innerHTML = `
-                <div class="card-header">
-                    <span class="keyword-badge">
-                        <i class="fas fa-robot" style="margin-right:4px;"></i> ${searchKey}
-                    </span>
-                    <div style="font-size:12px; color:${data.status === 'Active'?'#10b981':'#94a3b8'}">
+                <div class="card-top">
+                    <span class="keyword-pill"><i class="fas fa-search"></i> ${searchKey}</span>
+                    <div style="font-size:12px; color:${data.status === 'Active'?'#22c55e':'#94a3b8'}">
                         <span class="status-dot ${data.status === 'Active'?'st-Active':'st-Done'}"></span>${data.status}
                     </div>
                 </div>
                 
                 <h3>${data.name}</h3>
-                <div class="source"><i class="fab fa-telegram"></i> @${data.source}</div>
-
+                <div class="source"><i class="fab fa-telegram-plane"></i> @${data.source}</div>
+                
                 <div class="action-row">
-                    <a href="${data.link}" target="_blank" class="btn-link">
-                        Buka Link
-                    </a>
+                    <a href="${data.link}" target="_blank" class="btn-link">Buka Link</a>
                     </div>
             `;
 
-            // Membuat tombol delete secara manual agar event listener aman
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus";
             delBtn.onclick = async () => {
-                if(confirm(`Hapus data ${data.name}?`)) {
-                    await deleteDoc(doc(db, "airdrops", docId));
-                }
+                if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
-            // Masukkan tombol delete ke dalam div 'action-row'
             card.querySelector('.action-row').appendChild(delBtn);
-            
             grid.appendChild(card);
         });
     });
 
-    // --- SUBMIT FORM ---
+    // --- SUBMIT ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
         const originalText = btn.innerText;
-        btn.innerText = 'Menyimpan...'; btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
 
         try {
             await addDoc(collection(db, "airdrops"), {
@@ -370,8 +308,7 @@ const firebaseConfig = {
                 link: document.getElementById('link').value,
                 status: document.getElementById('status').value,
                 createdAt: new Date(),
-                last_message_snippet: "", 
-                tracked_msg_id: null 
+                last_message_snippet: "", tracked_msg_id: null 
             });
             e.target.reset();
         } catch(err) { alert(err.message); }
