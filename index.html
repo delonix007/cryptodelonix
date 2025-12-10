@@ -3,158 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop Vault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Airdrop Vault - iOS Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #5d5fef;
-            --primary-hover: #4b4dcb;
-            --text-main: #1f2937;
-            --text-sub: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --primary: #2563eb; /* Royal Blue */
+            --primary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
             --danger: #ef4444;
-            --danger-bg: #fee2e2;
-            --success: #10b981;
-            --input-bg: #f3f4f6;
-            --border: #e5e7eb;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 20px;
             
-            /* BACKGROUND MESH GRADIENT (Sesuai Referensi) */
-            background-color: #667eea;
+            /* --- LIQUID MESH GRADIENT BACKGROUND --- */
+            /* Ini meniru gaya iPhone/Peppo dengan gradasi dinamis */
+            background-color: #0f172a;
             background-image: 
-                radial-gradient(at 50% 0%, hsla(220,100%,90%,0.5) 0px, transparent 50%),
-                radial-gradient(at 0% 0%, hsla(189,100%,56%,0.4) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, hsla(260,100%,60%,0.4) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, hsla(220,100%,40%,0.4) 0px, transparent 50%),
-                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
-            background-size: cover;
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 100%, hsla(192,100%,40%,1) 0, transparent 50%), 
+                radial-gradient(at 80% 100%, hsla(270,100%,60%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 50%, hsla(200,100%,30%,1) 0, transparent 50%);
+            background-size: 150% 150%;
+            /* Animasi agar background terlihat "hidup" seperti liquid */
+            animation: liquidMove 20s ease infinite;
+        }
+
+        @keyframes liquidMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
             width: 100%;
-            max-width: 900px;
-            /* Glassmorphism Panel */
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            padding: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: 850px;
+            
+            /* --- GLASSMORPHISM CARD (iOS 18 Style) --- */
+            background: rgba(255, 255, 255, 0.85); /* Putih semi transparan */
+            backdrop-filter: blur(40px) saturate(180%); /* Efek blur kuat */
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            
+            border: 1px solid var(--glass-border);
+            border-radius: 32px; /* Sudut sangat bulat */
+            padding: 40px;
+            box-shadow: 
+                0 20px 50px -12px rgba(0, 0, 0, 0.25), /* Shadow dalam */
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset; /* Border dalam */
         }
 
         /* HEADER */
-        header { text-align: center; margin-bottom: 40px; }
-        header h1 { font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
-        header p { color: var(--text-sub); font-size: 14px; }
+        header { text-align: center; margin-bottom: 35px; }
+        .logo-box {
+            width: 60px; height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px auto;
+            color: white; font-size: 24px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        p { color: var(--text-sub); font-size: 14px; margin-top: 5px; }
+
+        /* FORM STYLING */
+        .input-group { margin-bottom: 25px; }
         
-        .logo-icon {
-            font-size: 32px; color: var(--primary); margin-bottom: 15px; display: inline-block;
-            background: rgba(93, 95, 239, 0.1); padding: 15px; border-radius: 16px;
+        .form-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; 
+        }
+        .full-width { grid-column: span 2; }
+
+        label {
+            display: block; font-size: 12px; font-weight: 600; 
+            color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        /* FORM */
-        .input-section { margin-bottom: 40px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group.full { grid-column: span 2; }
-        
-        label { display: block; font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
-        
         input, select {
-            width: 100%; padding: 14px 18px; background: var(--input-bg);
-            border: 1px solid transparent; border-radius: 12px; color: var(--text-main);
-            font-size: 14px; outline: none; transition: 0.3s;
+            width: 100%; padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 14px; color: var(--text-main);
+            transition: all 0.3s ease;
+            outline: none;
         }
-        input:focus, select:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1); }
+
+        input:focus, select:focus {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
 
         .btn-save {
-            width: 100%; padding: 16px; background: var(--primary); color: white;
-            font-size: 14px; font-weight: 600; border: none; border-radius: 12px;
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
-            box-shadow: 0 10px 20px -10px rgba(93, 95, 239, 0.5);
+            width: 100%; padding: 16px;
+            background: var(--primary-gradient);
+            color: white; font-weight: 600; border: none;
+            border-radius: 16px; cursor: pointer;
+            font-size: 15px; letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 20px -5px rgba(37, 99, 235, 0.4);
         }
-        .btn-save:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-save:hover { transform: scale(1.01); box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.5); }
+        .btn-save:active { transform: scale(0.98); }
 
-        /* LIST & CARD */
-        .section-header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+        /* LIST & CARDS */
+        .divider {
+            height: 1px; background: linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent);
+            margin: 40px 0 25px 0;
         }
-        .section-title { font-weight: 600; color: var(--text-main); }
-        .badge-count { background: var(--input-bg); padding: 4px 10px; border-radius: 20px; font-size: 12px; color: var(--text-sub); font-weight: 600; }
 
-        .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .grid-list {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+        }
 
         .card {
-            background: #fff; border: 1px solid var(--border); border-radius: 18px;
-            padding: 20px; transition: all 0.3s ease; display: flex; flex-direction: column;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: flex; flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -10px rgba(0,0,0,0.08); border-color: var(--primary); }
-
-        .card-top { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .keyword-pill { font-size: 11px; font-weight: 600; background: rgba(93, 95, 239, 0.08); color: var(--primary); padding: 4px 10px; border-radius: 8px; }
         
-        .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .st-Active { background-color: var(--success); }
-        .st-Done { background-color: var(--text-sub); }
-
-        .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: var(--text-main); }
-        .source { font-size: 13px; color: var(--text-sub); display: flex; align-items: center; gap: 5px; margin-bottom: 20px; flex-grow: 1; }
-
-        /* --- PERBAIKAN POSISI TOMBOL (ACTION BAR) --- */
-        .card-actions {
-            display: flex;
-            gap: 10px; /* Jarak antar tombol */
-            margin-top: auto; /* Dorong ke bawah */
+        .card:hover {
+            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Tombol Buka Link (Biru Muda) */
+        /* Status Indicator Dot */
+        .status-dot {
+            height: 8px; width: 8px; border-radius: 50%;
+            display: inline-block; margin-right: 6px;
+        }
+        .st-Active { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+        .st-Done { background: #cbd5e1; }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+        
+        .keyword-badge {
+            font-size: 11px; font-weight: 600;
+            color: var(--primary); background: rgba(37, 99, 235, 0.08);
+            padding: 4px 10px; border-radius: 12px;
+        }
+
+        .card h3 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .source { font-size: 13px; color: var(--text-sub); display: flex; align-items: center; gap: 5px; flex-grow: 1; margin-bottom: 20px;}
+
+        /* --- PERBAIKAN TOMBOL (FLEXBOX FIX) --- */
+        .action-row {
+            display: flex;
+            gap: 12px; /* Jarak antar tombol */
+            margin-top: auto; /* Dorong ke bawah mentok */
+        }
+
         .btn-link {
-            flex: 1; /* Memenuhi sisa ruang */
-            text-align: center;
+            flex: 1; /* Memenuhi sisa ruang yang ada */
             text-decoration: none;
-            background: #eef2ff;
+            background: #eff6ff;
             color: var(--primary);
-            font-size: 13px;
             font-weight: 600;
+            font-size: 13px;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
+            text-align: center;
             transition: 0.2s;
         }
-        .btn-link:hover { background: var(--primary); color: #fff; }
+        .btn-link:hover { background: #dbeafe; }
 
-        /* Tombol Hapus (Merah Muda Kotak) */
         .btn-delete {
-            width: 44px; /* Ukuran Kotak Tetap */
-            height: 44px; /* Tinggi sama dengan lebar */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--danger-bg);
-            color: var(--danger);
+            width: 44px; /* Lebar Tetap */
+            height: 44px; /* Tinggi sama */
+            flex-shrink: 0; /* Jangan menyusut */
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
+            background: #fef2f2;
+            color: var(--danger);
             cursor: pointer;
-            transition: 0.2s;
             font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
         }
-        .btn-delete:hover { background: var(--danger); color: #fff; transform: scale(1.05); }
+        .btn-delete:hover { background: #fee2e2; transform: scale(1.05); }
+
+        /* Loading State */
+        .loading-state { grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-sub); }
 
         @media (max-width: 600px) {
             .form-grid { grid-template-columns: 1fr; }
-            .form-group.full { grid-column: span 1; }
-            .container { padding: 30px 20px; }
+            .full-width { grid-column: span 1; }
+            .container { padding: 25px; border-radius: 24px; }
         }
     </style>
 </head>
@@ -162,61 +218,69 @@
 
 <div class="container">
     <header>
-        <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="logo-box">
+            <i class="fas fa-cube"></i>
+        </div>
         <h1>Airdrop Vault</h1>
-        <p>Private Dashboard & Automation</p>
+        <p>Private Automation Dashboard</p>
     </header>
 
-    <div class="input-section">
-        <form id="addForm">
-            <div class="form-grid">
-                <div class="form-group full">
-                    <label>Nama Project</label>
-                    <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
-                </div>
-                <div class="form-group">
-                    <label>Keyword Bot</label>
-                    <input type="text" id="keyword" placeholder="Contoh: Avon" required>
-                </div>
-                <div class="form-group">
-                    <label>Source (Channel ID)</label>
-                    <input type="text" id="source" placeholder="Contoh: airdropfinder" required>
-                </div>
-                <div class="form-group full">
-                    <label>Link Garapan</label>
-                    <input type="url" id="link" placeholder="https://..." required>
-                </div>
-                <div class="form-group full">
-                    <label>Status</label>
-                    <select id="status">
-                        <option value="Active">Active (Tracking Update)</option>
-                        <option value="Done">Done (Arsip)</option>
-                    </select>
-                </div>
+    <form id="addForm" class="input-group">
+        <div class="form-grid">
+            <div class="full-width">
+                <label>Nama Project</label>
+                <input type="text" id="name" placeholder="Contoh: Avon Public Testnet" required>
             </div>
-            <button type="submit" class="btn-save">Simpan Data</button>
-        </form>
-    </div>
+            
+            <div>
+                <label>Keyword Bot</label>
+                <input type="text" id="keyword" placeholder="Contoh: Avon" required>
+            </div>
 
-    <div class="section-header">
-        <span class="section-title">Monitoring List</span>
-        <span class="badge-count" id="totalCount">0 Items</span>
+            <div>
+                <label>Source (Channel)</label>
+                <input type="text" id="source" placeholder="Contoh: airdropfinder" required>
+            </div>
+
+            <div class="full-width">
+                <label>Link Garapan</label>
+                <input type="url" id="link" placeholder="https://..." required>
+            </div>
+
+            <div class="full-width">
+                <label>Status</label>
+                <select id="status">
+                    <option value="Active">Active (Tracking Update)</option>
+                    <option value="Done">Done (Arsip)</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn-save" style="margin-top: 15px;">
+            Simpan Data
+        </button>
+    </form>
+
+    <div class="divider"></div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="font-size:16px; color:var(--text-main);">Monitoring List</h3>
+        <span id="totalCount" style="font-size:12px; background:#f1f5f9; padding:4px 10px; border-radius:10px; color:#64748b;">0 Items</span>
     </div>
     
     <div id="gridList" class="grid-list">
-        <div style="grid-column:1/-1; text-align:center; padding:40px; color:#9ca3af;">
-            <i class="fas fa-circle-notch fa-spin"></i> Loading data...
+        <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i> Menghubungkan...
         </div>
     </div>
 </div>
 
 <script type="module">
-    // --- CONFIG FIREBASE (WAJIB DIGANTI LAGI) ---
+    // --- FIREBASE CONFIGURATION ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // JANGAN LUPA PASTE CONFIG API KEY DISINI
+    // ⚠️ PASTE API KEY KAMU DI SINI ⚠️
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -230,17 +294,18 @@ const firebaseConfig = {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // --- RENDER DATA ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
         const grid = document.getElementById('gridList');
-        const countBadge = document.getElementById('totalCount');
+        const badge = document.getElementById('totalCount');
         
-        grid.innerHTML = ""; 
-        countBadge.innerText = snapshot.size + " Items";
+        grid.innerHTML = "";
+        badge.innerText = snapshot.size + " Items";
 
         if(snapshot.empty){
-            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#9ca3af;">Belum ada data.</div>`;
+            grid.innerHTML = `<div class="loading-state">Belum ada data tersimpan.</div>`;
             return;
         }
 
@@ -252,41 +317,45 @@ const firebaseConfig = {
             const card = document.createElement('div');
             card.className = 'card';
             
-            // Layout Kartu yang Diperbaiki
             card.innerHTML = `
-                <div class="card-top">
-                    <span class="keyword-pill"><i class="fas fa-search"></i> ${searchKey}</span>
-                    <div style="font-size:12px; color:${data.status === 'Active'?'#10b981':'#6b7280'}">
+                <div class="card-header">
+                    <span class="keyword-badge">
+                        <i class="fas fa-robot" style="margin-right:4px;"></i> ${searchKey}
+                    </span>
+                    <div style="font-size:12px; color:${data.status === 'Active'?'#10b981':'#94a3b8'}">
                         <span class="status-dot ${data.status === 'Active'?'st-Active':'st-Done'}"></span>${data.status}
                     </div>
                 </div>
                 
                 <h3>${data.name}</h3>
                 <div class="source"><i class="fab fa-telegram"></i> @${data.source}</div>
-                
-                <div class="card-actions">
+
+                <div class="action-row">
                     <a href="${data.link}" target="_blank" class="btn-link">
                         Buka Link
                     </a>
                     </div>
             `;
 
-            // Buat Tombol Delete (Merah Kotak)
+            // Membuat tombol delete secara manual agar event listener aman
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus Data";
+            delBtn.title = "Hapus";
             delBtn.onclick = async () => {
-                if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
+                if(confirm(`Hapus data ${data.name}?`)) {
+                    await deleteDoc(doc(db, "airdrops", docId));
+                }
             };
 
-            // Masukkan tombol delete ke dalam .card-actions (di sebelah tombol Buka Link)
-            card.querySelector('.card-actions').appendChild(delBtn);
-
+            // Masukkan tombol delete ke dalam div 'action-row'
+            card.querySelector('.action-row').appendChild(delBtn);
+            
             grid.appendChild(card);
         });
     });
 
+    // --- SUBMIT FORM ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
