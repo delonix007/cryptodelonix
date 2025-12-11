@@ -3,75 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop Vault - Cyber Glass</title>
+    <title>Crypto Delonix</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* --- BACKGROUND (Kembali ke Biru Navy Gelap, bukan Hitam Mati) --- */
+            /* --- THEME COLORS --- */
             --bg-dark: #0f172a; 
-            
-            /* WARNA TOMBOL (Ungu Tua ke Biru Tua - Sesuai Request) */
             --primary-grad: linear-gradient(135deg, #6200ea 0%, #304ffe 100%);
             --primary-solid: #304ffe;
             
-            /* GLASS COLORS (LEBIH BENING/TRANSPARAN) */
-            /* Kita kurangi opacity-nya agar background terlihat */
+            /* GLASS VARIABLES */
             --glass-panel: rgba(15, 23, 42, 0.65); 
             --glass-input: rgba(255, 255, 255, 0.05);
             --glass-card: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.1);
             
-            /* WARNA TEKS */
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            
-            /* STATUS COLORS */
             --success: #00e676; 
             --danger: #ff1744;
         }
 
-        /* FONT */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
 
         body {
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 30px 20px;
             background-color: var(--bg-dark);
-            
             /* BACKGROUND IMAGE */
-            /* Tidak pakai overlay hitam pekat agar gambar asli terlihat */
             background-image: url('https://raw.githubusercontent.com/delonix007/cryptodelonix/refs/heads/main/bg.png'); 
-            
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
 
-        /* --- CONTAINER UTAMA (KACA) --- */
         .container {
             width: 100%; max-width: 850px;
             background: var(--glass-panel);
-            /* Blur tetap kuat agar teks terbaca jelas */
-            backdrop-filter: blur(40px) saturate(120%);
-            -webkit-backdrop-filter: blur(40px) saturate(120%);
-            
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 50px;
-            
-            /* Shadow lebih lembut, tidak hitam blok */
+            backdrop-filter: blur(40px) saturate(120%); -webkit-backdrop-filter: blur(40px) saturate(120%);
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 50px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* HEADER */
         header { text-align: center; margin-bottom: 45px; }
         .logo-box {
             width: 70px; height: 70px; margin: 0 auto 20px;
             background: var(--primary-grad); 
-            /* Bentuk Logo Cyberpunk */
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             display: flex; align-items: center; justify-content: center;
             font-size: 32px; color: white;
@@ -80,128 +57,142 @@
         h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; text-transform: uppercase; }
         p { color: var(--text-muted); margin-top: 8px; font-size: 14px; }
 
-        /* FORM */
         .input-group { margin-bottom: 40px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .full-width { grid-column: span 2; }
 
-        label { 
-            display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); 
-            margin-bottom: 8px; margin-left: 4px; text-transform: uppercase; letter-spacing: 1px;
-        }
+        label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
-        input, select {
-            width: 100%; padding: 16px 20px;
-            background: var(--glass-input);
-            border: 1px solid var(--glass-border);
-            border-radius: 4px;
+        /* INPUT & TEXTAREA STYLE */
+        /* Kita kunci tingginya (height) agar semua sama rata */
+        input[type="text"], input[type="url"], select {
+            width: 100%; 
+            height: 54px; /* FIXED HEIGHT AGAR SAMA PERSIS */
+            padding: 0 20px; /* Padding samping saja, vertikal diatur height */
+            background: var(--glass-input); border: 1px solid var(--glass-border); border-radius: 4px;
             color: var(--text-main); font-size: 14px; outline: none;
             transition: border-color 0.3s, background-color 0.3s;
         }
         
-        input::placeholder { color: rgba(255,255,255,0.2); }
+        /* Textarea pengecualian, tingginya bebas */
+        textarea { 
+            width: 100%; padding: 16px 20px;
+            background: var(--glass-input); border: 1px solid var(--glass-border); border-radius: 4px;
+            color: var(--text-main); font-size: 14px; outline: none;
+            transition: border-color 0.3s, background-color 0.3s;
+            resize: vertical; min-height: 80px; line-height: 1.5; 
+        }
+
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
         
-        input:focus, select:focus {
-            background: rgba(30, 41, 59, 0.6); /* Agak transparan saat fokus */
-            border-color: #6200ea;
+        input:focus, select:focus, textarea:focus {
+            background: rgba(30, 41, 59, 0.6); border-color: #6200ea;
             box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
         }
 
-        /* --- FIXED ARROW SELECT --- */
+        /* --- UPDATED CHECKBOX STYLE (FIXED HEIGHT) --- */
+        .checkbox-wrapper {
+            display: flex; align-items: center; gap: 12px;
+            background: var(--glass-input); 
+            height: 54px; /* FIXED HEIGHT SAMA DENGAN INPUT */
+            padding: 0 20px;
+            border-radius: 4px; 
+            border: 1px solid var(--glass-border);
+            transition: border-color 0.3s, background-color 0.3s;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .checkbox-wrapper:hover {
+            background: rgba(30, 41, 59, 0.6); 
+            border-color: #6200ea;
+        }
+
+        input[type="checkbox"] { 
+            width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; 
+            padding: 0; margin: 0; background: none; border: none; 
+            /* Reset specific input styles for checkbox */
+            height: 18px; 
+        }
+        
+        .checkbox-label { 
+            margin: 0; cursor: pointer; 
+            font-size: 14px; 
+            color: var(--text-main); 
+            font-weight: 400;
+            text-transform: none; 
+            letter-spacing: 0;
+            /* Mencegah teks turun ke bawah */
+            white-space: nowrap; 
+        }
+
         select {
             appearance: none; -webkit-appearance: none; cursor: pointer;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-            padding-right: 45px;
+            background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; padding-right: 45px;
         }
         select option { background: #0f172a; color: white; padding: 10px; }
 
-        /* --- TOMBOL SIMPAN (Gaya Cyberpunk Gelap) --- */
+        /* BUTTON SUBMIT */
         .btn-save {
             width: 100%; padding: 20px; margin-top: 15px;
-            background: var(--primary-grad);
-            color: white; font-weight: 700; font-size: 16px; letter-spacing: 1px;
+            background: var(--primary-grad); color: white; font-weight: 700; font-size: 16px; letter-spacing: 1px;
             border: none; cursor: pointer;
-            
-            /* Bentuk Sudut Terpotong */
-            clip-path: polygon(
-                15px 0, 
-                100% 0, 
-                100% calc(100% - 15px), 
-                calc(100% - 15px) 100%, 
-                0 100%, 
-                0 15px
-            );
-            
-            /* Shadow Ungu/Biru */
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
             filter: drop-shadow(0 10px 20px rgba(76, 29, 149, 0.4));
             transition: transform 0.2s, filter 0.2s;
         }
-        .btn-save:hover { 
-            transform: translateY(-2px);
-            filter: drop-shadow(0 15px 30px rgba(76, 29, 149, 0.7));
-        }
+        .btn-save:hover { transform: translateY(-2px); filter: drop-shadow(0 15px 30px rgba(76, 29, 149, 0.7)); }
         .btn-save:active { transform: scale(0.98); }
         .btn-save:disabled { opacity: 0.7; cursor: wait; transform: none; background: #333; filter: none; }
 
-        /* LIST GARAPAN */
+        /* LIST & CARD */
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin: 50px 0 25px; padding-bottom: 20px;
-            border-bottom: 1px solid var(--glass-border);
+            margin: 50px 0 25px; padding-bottom: 20px; border-bottom: 1px solid var(--glass-border);
         }
         .section-title { font-size: 16px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
         .badge-count { 
-            background: rgba(255,255,255,0.05); padding: 5px 12px; 
-            border-radius: 4px; color: var(--text-muted); 
-            font-size: 12px; font-weight: 600; border: 1px solid var(--glass-border); 
+            background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 4px; 
+            color: var(--text-muted); font-size: 12px; font-weight: 600; border: 1px solid var(--glass-border); 
         }
 
         .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
         .card {
-            background: var(--glass-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 24px;
-            display: flex; flex-direction: column;
+            background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 12px;
+            padding: 24px; display: flex; flex-direction: column;
             transition: transform 0.3s, background 0.3s, border-color 0.3s;
         }
-        .card:hover { 
-            transform: translateY(-5px); 
-            /* Saat hover sedikit lebih gelap tapi tetap transparan */
-            background: rgba(30, 41, 59, 0.6); 
-            border-color: #6200ea;
-        }
+        .card:hover { transform: translateY(-5px); background: rgba(30, 41, 59, 0.6); border-color: #6200ea; }
 
         .card-top { display: flex; justify-content: space-between; margin-bottom: 12px; }
         .keyword-pill { 
-            background: rgba(98, 0, 234, 0.15); color: #b388ff; 
-            padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; 
-            border: 1px solid rgba(98, 0, 234, 0.3);
+            background: rgba(98, 0, 234, 0.15); color: #b388ff; padding: 6px 12px; 
+            border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid rgba(98, 0, 234, 0.3);
         }
         .status-badge { font-size: 11px; font-weight: 600; display: flex; align-items: center; color: var(--text-muted); }
         .st-Active { color: var(--success); }
         
         .card h3 { color: var(--text-main); margin-bottom: 8px; font-size: 16px; font-weight: 700; }
-        .source { color: var(--text-muted); font-size: 13px; flex-grow: 1; margin-bottom: 24px; display: flex; align-items: center; gap: 6px; }
+        .source { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
 
-        .action-row { display: flex; gap: 12px; }
+        .notes-box {
+            background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px;
+            margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1;
+        }
+
+        .action-row { display: flex; gap: 12px; margin-top: auto; }
         .btn-link {
             flex: 1; text-decoration: none; text-align: center;
-            background: rgba(255,255,255,0.05); color: var(--text-main);
-            padding: 12px; border-radius: 4px; font-weight: 600; font-size: 13px;
-            border: 1px solid var(--glass-border); transition: 0.2s;
+            background: rgba(255,255,255,0.05); color: var(--text-main); padding: 12px; border-radius: 4px; 
+            font-weight: 600; font-size: 13px; border: 1px solid var(--glass-border); transition: 0.2s;
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
         .btn-delete {
-            width: 45px; height: 45px; flex-shrink: 0;
-            background: rgba(255, 23, 68, 0.1); color: #ff8a80;
-            border: 1px solid rgba(255, 23, 68, 0.2);
-            border-radius: 4px; font-size: 16px; cursor: pointer;
+            width: 45px; height: 45px; flex-shrink: 0; background: rgba(255, 23, 68, 0.1); color: #ff8a80;
+            border: 1px solid rgba(255, 23, 68, 0.2); border-radius: 4px; font-size: 16px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
@@ -218,7 +209,7 @@
 <div class="container">
     <header>
         <div class="logo-box"><i class="fas fa-cube"></i></div>
-        <h1>Airdrop Vault</h1>
+        <h1>Delonix Airdrop Vault</h1>
         <p>Private Automation Dashboard</p>
     </header>
 
@@ -235,20 +226,33 @@
                 </div>
                 <div>
                     <label>Source ID</label>
-                    <input type="text" id="source" placeholder="airdropfinder" required>
+                    <input type="text" id="source" placeholder="airdropfind" required>
                 </div>
                 <div class="full-width">
                     <label>Link Garapan</label>
                     <input type="url" id="link" placeholder="https://..." required>
                 </div>
                 <div class="full-width">
+                    <label>Keterangan / Catatan (Opsional)</label>
+                    <textarea id="notes" placeholder="Tulis info tambahan, misal: Wajib tx seminggu sekali..."></textarea>
+                </div>
+                
+                <div>
                     <label>Status</label>
                     <select id="status">
                         <option value="Active">Active (Tracking Update)</option>
                         <option value="Done">Done (Arsip)</option>
                     </select>
                 </div>
+
+                <div>
+                    <label>Reminder</label> <div class="checkbox-wrapper" onclick="document.getElementById('dailyReminder').click()">
+                        <input type="checkbox" id="dailyReminder">
+                        <label for="dailyReminder" class="checkbox-label" onclick="event.stopPropagation()">Aktifkan Reminder Harian?</label>
+                    </div>
+                </div>
             </div>
+
             <button type="submit" class="btn-save">
                 <i class="fas fa-save" style="margin-right: 8px;"></i> SUBMIT
             </button>
@@ -261,20 +265,19 @@
     </div>
     
     <div id="gridList" class="grid-list">
-        <div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted); display:flex; flex-direction:column; align-items:center; gap:15px;">
+        <div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted);">
             <i class="fas fa-circle-notch fa-spin" style="font-size: 32px; color: var(--primary-solid);"></i>
-            <span>Menghubungkan ke database...</span>
+            <br><br>Menghubungkan ke database...
         </div>
     </div>
 </div>
 
 <script type="module">
-    // --- FIREBASE CONFIGURATION ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // GANTI DENGAN CONFIG FIREBASE KAMU
+    // PASTE CONFIG FIREBASE KAMU DISINI
 const firebaseConfig = {
   apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
   authDomain: "cryptodelonix.firebaseapp.com",
@@ -288,7 +291,6 @@ const firebaseConfig = {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // --- RENDER DATA ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
@@ -298,11 +300,7 @@ const firebaseConfig = {
         grid.innerHTML = ""; badge.innerText = snapshot.size + " Items";
 
         if(snapshot.empty){
-            grid.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:60px 40px; color:var(--text-muted); background:var(--glass-card); border-radius:12px; border:1px solid var(--glass-border); display:flex; flex-direction:column; align-items:center; gap:15px;">
-                <i class="far fa-folder-open" style="font-size: 40px; opacity:0.5;"></i>
-                <p>Belum ada data garapan.</p>
-            </div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted);">Belum ada data.</div>`;
             return;
         }
 
@@ -311,25 +309,34 @@ const firebaseConfig = {
             const docId = documentSnapshot.id;
             const searchKey = data.search_keyword || data.name;
 
+            const reminderIcon = data.isDailyReminder ? 
+                `<i class="fas fa-bell" style="color:#fbbf24; margin-left:8px;" title="Daily Reminder"></i>` : '';
+
+            const notesHtml = data.notes && data.notes.trim() !== "" ? 
+                `<div class="notes-box"><i class="far fa-sticky-note" style="margin-right:5px; opacity:0.7;"></i> ${data.notes}</div>` : 
+                '<div style="flex-grow:1;"></div>';
+
             const card = document.createElement('div');
             card.className = 'card';
             
             card.innerHTML = `
                 <div class="card-top">
-                    <span class="keyword-pill"><i class="fas fa-robot" style="margin-right:6px;"></i>${searchKey}</span>
+                    <span class="keyword-pill"><i class="fas fa-robot"></i> ${searchKey}</span>
                     <div class="status-badge ${data.status === 'Active'?'st-Active':''}">
                         <i class="fas fa-circle" style="font-size:6px; margin-right:6px;"></i> ${data.status}
                     </div>
                 </div>
                 
-                <h3>${data.name}</h3>
-                <div class="source"><i class="fab fa-telegram-plane" style="color:var(--primary-solid);"></i> @${data.source}</div>
+                <h3>${data.name} ${reminderIcon}</h3>
+                <div class="source"><i class="fab fa-telegram-plane"></i> @${data.source}</div>
+
+                ${notesHtml}
                 
                 <div class="action-row">
                     <a href="${data.link}" target="_blank" class="btn-link">
-                        Buka Link <i class="fas fa-external-link-alt" style="margin-left:6px; font-size:12px;"></i>
+                        Buka Link <i class="fas fa-external-link-alt" style="margin-left:5px;"></i>
                     </a>
-                    </div>
+                </div>
             `;
 
             const delBtn = document.createElement('button');
@@ -344,7 +351,6 @@ const firebaseConfig = {
         });
     });
 
-    // --- SUBMIT LOGIC ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
@@ -359,23 +365,25 @@ const firebaseConfig = {
                 search_keyword: document.getElementById('keyword').value.trim(),
                 source: document.getElementById('source').value.replace('@','').trim(),
                 link: document.getElementById('link').value,
+                notes: document.getElementById('notes').value,
                 status: document.getElementById('status').value,
+                isDailyReminder: document.getElementById('dailyReminder').checked,
                 createdAt: new Date(),
                 last_message_snippet: "", tracked_msg_id: null 
             });
             
             e.target.reset();
             btn.innerHTML = '<i class="fas fa-check"></i> SUCCESS!';
-            btn.style.background = "#00e676"; // Hijau saat sukses
+            btn.style.background = "#00e676";
             
             setTimeout(() => {
                 btn.innerHTML = originalHtml;
                 btn.disabled = false;
-                btn.style.background = ""; // Reset ke gradasi CSS
+                btn.style.background = ""; 
             }, 2000);
 
         } catch(err) { 
-            alert("Gagal menyimpan: " + err.message);
+            alert("Error: " + err.message);
             btn.innerHTML = originalHtml;
             btn.disabled = false;
         }
