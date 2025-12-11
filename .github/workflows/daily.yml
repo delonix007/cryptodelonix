@@ -1,0 +1,35 @@
+name: Daily Task Reminder
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Jalan setiap jam 07:00 WIB (00:00 UTC)
+  workflow_dispatch: # Bisa dijalankan manual
+
+jobs:
+  send_reminder:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install firebase-admin requests
+
+    - name: Create Firebase Key File
+      env:
+        FIREBASE_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      run: |
+        echo "$FIREBASE_JSON" > firebase_key.json
+
+    - name: Run Reminder Script
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python daily.py
