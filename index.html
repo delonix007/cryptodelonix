@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Delonix</title>
+    <title>Airdrop Vault - Cyber Glass</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -24,6 +24,7 @@
             --text-muted: #94a3b8;
             --success: #00e676; 
             --danger: #ff1744;
+            --warning: #fbbf24;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
@@ -32,7 +33,7 @@
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 30px 20px;
             background-color: var(--bg-dark);
-            /* BACKGROUND IMAGE */
+            /* GANTI URL GAMBAR BACKGROUND DI SINI */
             background-image: url('https://raw.githubusercontent.com/delonix007/cryptodelonix/refs/heads/main/bg.png'); 
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
@@ -64,17 +65,15 @@
         label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
         /* INPUT & TEXTAREA STYLE */
-        /* Kita kunci tingginya (height) agar semua sama rata */
         input[type="text"], input[type="url"], select {
             width: 100%; 
-            height: 54px; /* FIXED HEIGHT AGAR SAMA PERSIS */
-            padding: 0 20px; /* Padding samping saja, vertikal diatur height */
+            height: 54px; /* FIXED HEIGHT */
+            padding: 0 20px; 
             background: var(--glass-input); border: 1px solid var(--glass-border); border-radius: 4px;
             color: var(--text-main); font-size: 14px; outline: none;
             transition: border-color 0.3s, background-color 0.3s;
         }
         
-        /* Textarea pengecualian, tingginya bebas */
         textarea { 
             width: 100%; padding: 16px 20px;
             background: var(--glass-input); border: 1px solid var(--glass-border); border-radius: 4px;
@@ -90,17 +89,19 @@
             box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
         }
 
-        /* --- UPDATED CHECKBOX STYLE (FIXED HEIGHT) --- */
+        /* --- UPDATED CHECKBOX STYLE (FIXED) --- */
+        /* Menggunakan label sebagai wrapper agar bisa diklik dimana saja */
         .checkbox-wrapper {
             display: flex; align-items: center; gap: 12px;
             background: var(--glass-input); 
-            height: 54px; /* FIXED HEIGHT SAMA DENGAN INPUT */
+            height: 54px; 
             padding: 0 20px;
             border-radius: 4px; 
             border: 1px solid var(--glass-border);
             transition: border-color 0.3s, background-color 0.3s;
-            cursor: pointer;
+            cursor: pointer; /* Cursor tangan */
             width: 100%;
+            user-select: none; /* Mencegah teks terblok saat klik cepat */
         }
         
         .checkbox-wrapper:hover {
@@ -111,7 +112,6 @@
         input[type="checkbox"] { 
             width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; 
             padding: 0; margin: 0; background: none; border: none; 
-            /* Reset specific input styles for checkbox */
             height: 18px; 
         }
         
@@ -122,7 +122,6 @@
             font-weight: 400;
             text-transform: none; 
             letter-spacing: 0;
-            /* Mencegah teks turun ke bawah */
             white-space: nowrap; 
         }
 
@@ -190,12 +189,18 @@
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
-        .btn-delete {
-            width: 45px; height: 45px; flex-shrink: 0; background: rgba(255, 23, 68, 0.1); color: #ff8a80;
-            border: 1px solid rgba(255, 23, 68, 0.2); border-radius: 4px; font-size: 16px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        .btn-icon {
+            width: 45px; height: 45px; flex-shrink: 0; border-radius: 4px; font-size: 16px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent;
         }
+
+        /* Tombol Delete (Merah) */
+        .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
+
+        /* Tombol Edit (Kuning) */
+        .btn-edit { background: rgba(251, 191, 36, 0.1); color: #fcd34d; border-color: rgba(251, 191, 36, 0.2); }
+        .btn-edit:hover { background: rgba(251, 191, 36, 0.25); border-color: var(--warning); color: white; }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -209,7 +214,7 @@
 <div class="container">
     <header>
         <div class="logo-box"><i class="fas fa-cube"></i></div>
-        <h1>Delonix Airdrop Vault</h1>
+        <h1>Airdrop Vault</h1>
         <p>Private Automation Dashboard</p>
     </header>
 
@@ -226,7 +231,7 @@
                 </div>
                 <div>
                     <label>Source ID</label>
-                    <input type="text" id="source" placeholder="airdropfind" required>
+                    <input type="text" id="source" placeholder="airdropfinder" required>
                 </div>
                 <div class="full-width">
                     <label>Link Garapan</label>
@@ -246,10 +251,11 @@
                 </div>
 
                 <div>
-                    <label>Reminder</label> <div class="checkbox-wrapper" onclick="document.getElementById('dailyReminder').click()">
+                    <label>Reminder</label>
+                    <label class="checkbox-wrapper" for="dailyReminder">
                         <input type="checkbox" id="dailyReminder">
-                        <label for="dailyReminder" class="checkbox-label" onclick="event.stopPropagation()">Aktifkan Reminder Harian?</label>
-                    </div>
+                        <span class="checkbox-label">Aktifkan Reminder Harian?</span>
+                    </label>
                 </div>
             </div>
 
@@ -274,7 +280,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } 
+    import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     // PASTE CONFIG FIREBASE KAMU DISINI
@@ -312,9 +318,8 @@ const firebaseConfig = {
             const reminderIcon = data.isDailyReminder ? 
                 `<i class="fas fa-bell" style="color:#fbbf24; margin-left:8px;" title="Daily Reminder"></i>` : '';
 
-            const notesHtml = data.notes && data.notes.trim() !== "" ? 
-                `<div class="notes-box"><i class="far fa-sticky-note" style="margin-right:5px; opacity:0.7;"></i> ${data.notes}</div>` : 
-                '<div style="flex-grow:1;"></div>';
+            const notesText = data.notes && data.notes.trim() !== "" ? data.notes : "Tidak ada keterangan.";
+            const notesHtml = `<div class="notes-box"><i class="far fa-sticky-note" style="margin-right:5px; opacity:0.7;"></i> ${notesText}</div>`;
 
             const card = document.createElement('div');
             card.className = 'card';
@@ -334,19 +339,41 @@ const firebaseConfig = {
                 
                 <div class="action-row">
                     <a href="${data.link}" target="_blank" class="btn-link">
-                        Buka Link <i class="fas fa-external-link-alt" style="margin-left:5px;"></i>
+                        Buka <i class="fas fa-external-link-alt" style="margin-left:5px;"></i>
                     </a>
                 </div>
             `;
 
+            // 1. TOMBOL EDIT NOTES (KUNING)
+            const editBtn = document.createElement('button');
+            editBtn.className = 'btn-icon btn-edit';
+            editBtn.innerHTML = '<i class="far fa-edit"></i>';
+            editBtn.title = "Sunting Keterangan";
+            editBtn.onclick = async () => {
+                const newNote = prompt("Sunting Keterangan:", data.notes || "");
+                if (newNote !== null) {
+                    try {
+                        await updateDoc(doc(db, "airdrops", docId), { notes: newNote });
+                    } catch (err) {
+                        alert("Gagal update: " + err.message);
+                    }
+                }
+            };
+
+            // 2. TOMBOL HAPUS (MERAH)
             const delBtn = document.createElement('button');
-            delBtn.className = 'btn-delete';
+            delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            delBtn.title = "Hapus Data";
             delBtn.onclick = async () => {
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
-            card.querySelector('.action-row').appendChild(delBtn);
+            // Masukkan tombol ke action row
+            const actionRow = card.querySelector('.action-row');
+            actionRow.appendChild(editBtn);
+            actionRow.appendChild(delBtn);
+
             grid.appendChild(card);
         });
     });
