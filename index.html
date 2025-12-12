@@ -25,6 +25,7 @@
             --success: #00e676; 
             --danger: #ff1744;
             --warning: #fbbf24;
+            --info: #38bdf8; /* Warna Biru Langit untuk Edit Link */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
@@ -33,7 +34,7 @@
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 30px 20px;
             background-color: var(--bg-dark);
-            /* GANTI URL GAMBAR BACKGROUND DI SINI */
+            /* BACKGROUND IMAGE */
             background-image: url('https://raw.githubusercontent.com/delonix007/cryptodelonix/refs/heads/main/bg.png'); 
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
@@ -89,8 +90,7 @@
             box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
         }
 
-        /* --- UPDATED CHECKBOX STYLE (FIXED) --- */
-        /* Menggunakan label sebagai wrapper agar bisa diklik dimana saja */
+        /* --- FIXED CHECKBOX STYLE --- */
         .checkbox-wrapper {
             display: flex; align-items: center; gap: 12px;
             background: var(--glass-input); 
@@ -99,9 +99,9 @@
             border-radius: 4px; 
             border: 1px solid var(--glass-border);
             transition: border-color 0.3s, background-color 0.3s;
-            cursor: pointer; /* Cursor tangan */
+            cursor: pointer;
             width: 100%;
-            user-select: none; /* Mencegah teks terblok saat klik cepat */
+            user-select: none;
         }
         
         .checkbox-wrapper:hover {
@@ -111,8 +111,8 @@
 
         input[type="checkbox"] { 
             width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; 
-            padding: 0; margin: 0; background: none; border: none; 
-            height: 18px; 
+            padding: 0; margin: 0; 
+            appearance: auto;
         }
         
         .checkbox-label { 
@@ -122,7 +122,6 @@
             font-weight: 400;
             text-transform: none; 
             letter-spacing: 0;
-            white-space: nowrap; 
         }
 
         select {
@@ -182,6 +181,7 @@
         }
 
         .action-row { display: flex; gap: 12px; margin-top: auto; }
+        
         .btn-link {
             flex: 1; text-decoration: none; text-align: center;
             background: rgba(255,255,255,0.05); color: var(--text-main); padding: 12px; border-radius: 4px; 
@@ -189,6 +189,7 @@
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
+        /* Icon Buttons */
         .btn-icon {
             width: 45px; height: 45px; flex-shrink: 0; border-radius: 4px; font-size: 16px; cursor: pointer;
             display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent;
@@ -198,9 +199,13 @@
         .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
 
-        /* Tombol Edit (Kuning) */
+        /* Tombol Edit Note (Kuning) */
         .btn-edit { background: rgba(251, 191, 36, 0.1); color: #fcd34d; border-color: rgba(251, 191, 36, 0.2); }
         .btn-edit:hover { background: rgba(251, 191, 36, 0.25); border-color: var(--warning); color: white; }
+
+        /* Tombol Edit Link (Biru Langit) - BARU */
+        .btn-edit-link { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
+        .btn-edit-link:hover { background: rgba(56, 189, 248, 0.25); border-color: var(--info); color: white; }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -252,7 +257,7 @@
 
                 <div>
                     <label>Reminder</label>
-                    <label class="checkbox-wrapper" for="dailyReminder">
+                    <label class="checkbox-wrapper">
                         <input type="checkbox" id="dailyReminder">
                         <span class="checkbox-label">Aktifkan Reminder Harian?</span>
                     </label>
@@ -283,16 +288,15 @@
     import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // PASTE CONFIG FIREBASE KAMU DISINI
-const firebaseConfig = {
-  apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
-  authDomain: "cryptodelonix.firebaseapp.com",
-  projectId: "cryptodelonix",
-  storageBucket: "cryptodelonix.firebasestorage.app",
-  messagingSenderId: "265190187840",
-  appId: "1:265190187840:web:86be6be1e4eac1aa70d0a5",
-  measurementId: "G-BSSFE27WZ5"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
+      authDomain: "cryptodelonix.firebaseapp.com",
+      projectId: "cryptodelonix",
+      storageBucket: "cryptodelonix.firebasestorage.app",
+      messagingSenderId: "265190187840",
+      appId: "1:265190187840:web:86be6be1e4eac1aa70d0a5",
+      measurementId: "G-BSSFE27WZ5"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -344,13 +348,31 @@ const firebaseConfig = {
                 </div>
             `;
 
-            // 1. TOMBOL EDIT NOTES (KUNING)
+            // 1. TOMBOL EDIT LINK (BARU - BIRU LANGIT)
+            const editLinkBtn = document.createElement('button');
+            editLinkBtn.className = 'btn-icon btn-edit-link';
+            editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
+            editLinkBtn.title = "Sunting Link";
+            editLinkBtn.onclick = async () => {
+                const currentLink = data.link || "";
+                const newLink = prompt("Edit Link Garapan:", currentLink);
+                if (newLink !== null) {
+                    try {
+                        await updateDoc(doc(db, "airdrops", docId), { link: newLink });
+                    } catch (err) {
+                        alert("Gagal update link: " + err.message);
+                    }
+                }
+            };
+
+            // 2. TOMBOL EDIT NOTE (KUNING)
             const editBtn = document.createElement('button');
             editBtn.className = 'btn-icon btn-edit';
-            editBtn.innerHTML = '<i class="far fa-edit"></i>';
+            editBtn.innerHTML = '<i class="fas fa-pen"></i>';
             editBtn.title = "Sunting Keterangan";
             editBtn.onclick = async () => {
-                const newNote = prompt("Sunting Keterangan:", data.notes || "");
+                const currentNote = data.notes || "";
+                const newNote = prompt("Edit Keterangan / Catatan:", currentNote);
                 if (newNote !== null) {
                     try {
                         await updateDoc(doc(db, "airdrops", docId), { notes: newNote });
@@ -360,17 +382,17 @@ const firebaseConfig = {
                 }
             };
 
-            // 2. TOMBOL HAPUS (MERAH)
+            // 3. TOMBOL DELETE (MERAH)
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus Data";
             delBtn.onclick = async () => {
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
             // Masukkan tombol ke action row
             const actionRow = card.querySelector('.action-row');
+            actionRow.appendChild(editLinkBtn);
             actionRow.appendChild(editBtn);
             actionRow.appendChild(delBtn);
 
