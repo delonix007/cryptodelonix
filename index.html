@@ -144,31 +144,21 @@
 
         .notes-box { background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px; margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1; }
 
-        /* Action Row: Wrap agar tombol turun jika layar sempit */
         .action-row { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
         
-        /* TOMBOL BUKA (DIRAMPINGKAN) */
+        /* TOMBOL BUKA (AUTO WIDTH) */
         .btn-link {
-            flex: 0 0 auto; /* Jangan memanjang otomatis */
-            width: auto;    /* Lebar sesuai konten */
+            flex: 0 0 auto; width: auto;
             text-decoration: none; text-align: center; white-space: nowrap;
             background: rgba(255,255,255,0.05); color: var(--text-main); 
-            padding: 0 16px; /* Padding kiri-kanan secukupnya */
-            height: 42px; /* Samakan tinggi dengan tombol icon */
+            padding: 0 16px; height: 42px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 4px; font-weight: 600; font-size: 13px; border: 1px solid var(--glass-border); transition: 0.2s;
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
-        /* TOMBOL ICON (Edit, Delete, dll) */
-        .btn-icon { 
-            width: 42px; height: 42px; flex-shrink: 0; 
-            border-radius: 4px; font-size: 15px; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; 
-            transition: 0.2s; border: 1px solid transparent; 
-        }
+        .btn-icon { width: 42px; height: 42px; flex-shrink: 0; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent; }
         
-        /* WARNA-WARNA TOMBOL */
         .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
         
@@ -234,7 +224,7 @@
                     <textarea id="notes" placeholder="Tulis info tambahan, misal: Wajib tx seminggu sekali..."></textarea>
                 </div>
                 
-                <div>
+                <div class="full-width">
                     <label>Status</label>
                     <select id="status">
                         <option value="Active">Active (Tracking Update)</option>
@@ -242,7 +232,7 @@
                     </select>
                 </div>
 
-                <div>
+                <div class="full-width">
                     <label>Reminder</label>
                     <label class="checkbox-wrapper">
                         <input type="checkbox" id="dailyReminder">
@@ -327,66 +317,52 @@
                 
                 <div class="action-row">
                     <a href="${data.link}" target="_blank" class="btn-link">
-                        Buka <i class="fas fa-external-link-alt" style="margin-left:6px;"></i>
+                        Buka <i class="fas fa-external-link-alt" style="margin-left:5px;"></i>
                     </a>
                 </div>
             `;
 
-            // --- TOMBOL-TOMBOL AKSI ---
-
-            // 1. Edit Link (Biru Langit)
+            // --- TOMBOL-TOMBOL ---
             const editLinkBtn = document.createElement('button');
             editLinkBtn.className = 'btn-icon btn-edit-link';
             editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
-            editLinkBtn.title = "Sunting Link Garapan";
             editLinkBtn.onclick = async () => {
                 const newLink = prompt("Edit Link Garapan:", data.link || "");
                 if (newLink !== null) try { await updateDoc(doc(db, "airdrops", docId), { link: newLink }); } catch (err) { alert(err.message); }
             };
 
-            // 2. Edit Telegram ID (Biru Telegram)
             const editTeleBtn = document.createElement('button');
             editTeleBtn.className = 'btn-icon btn-edit-tele';
             editTeleBtn.innerHTML = '<i class="fab fa-telegram-plane"></i>';
-            editTeleBtn.title = "Sunting Start ID Telegram";
             editTeleBtn.onclick = async () => {
-                const newLink = prompt("Masukkan Link Post Telegram Baru:", "");
+                const newLink = prompt("Edit Start ID Telegram (Link Post):", "");
                 if (newLink !== null && newLink.trim() !== "") {
                     const match = newLink.match(/\/(\d+)(\?|$)/);
                     if (match) {
-                        try {
-                            await updateDoc(doc(db, "airdrops", docId), { tracked_msg_id: match[1] });
-                            alert(`Berhasil update Start ID ke: ${match[1]}`);
-                        } catch (err) { alert("Gagal update: " + err.message); }
+                        try { await updateDoc(doc(db, "airdrops", docId), { tracked_msg_id: match[1] }); alert(`Updated ID: ${match[1]}`); } catch (err) { alert(err.message); }
                     } else { alert("Link tidak valid!"); }
                 }
             };
 
-            // 3. Edit Keyword (Ungu)
             const editKeywordBtn = document.createElement('button');
             editKeywordBtn.className = 'btn-icon btn-edit-keyword';
             editKeywordBtn.innerHTML = '<i class="fas fa-tag"></i>';
-            editKeywordBtn.title = "Sunting Keyword";
             editKeywordBtn.onclick = async () => {
                 const newKw = prompt("Edit Keyword Bot:", data.search_keyword || "");
                 if (newKw !== null) try { await updateDoc(doc(db, "airdrops", docId), { search_keyword: newKw.trim() }); } catch (err) { alert(err.message); }
             };
 
-            // 4. Edit Note (Kuning)
             const editBtn = document.createElement('button');
             editBtn.className = 'btn-icon btn-edit';
             editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-            editBtn.title = "Sunting Keterangan";
             editBtn.onclick = async () => {
                 const newNote = prompt("Edit Keterangan:", data.notes || "");
                 if (newNote !== null) try { await updateDoc(doc(db, "airdrops", docId), { notes: newNote }); } catch (err) { alert(err.message); }
             };
 
-            // 5. Delete (Merah)
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus";
             delBtn.onclick = async () => {
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
