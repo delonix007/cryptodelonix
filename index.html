@@ -9,19 +9,22 @@
     
     <style>
         :root {
-            /* --- THEME COLORS --- */
+            /* --- COLOR PALETTE --- */
             --bg-dark: #0f172a; 
             --primary-grad: linear-gradient(135deg, #6200ea 0%, #304ffe 100%);
             --primary-solid: #304ffe;
             
-            /* GLASS VARIABLES */
+            /* GLASS EFFECT */
             --glass-panel: rgba(15, 23, 42, 0.65); 
             --glass-input: rgba(255, 255, 255, 0.05);
             --glass-card: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.1);
             
+            /* TEXT COLORS */
             --text-main: #ffffff;
             --text-muted: #94a3b8;
+            
+            /* STATUS COLORS */
             --success: #00e676; 
             --danger: #ff1744;
             --warning: #fbbf24;
@@ -35,11 +38,12 @@
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 30px 20px;
             background-color: var(--bg-dark);
-            /* BACKGROUND IMAGE */
+            /* Background Image dari GitHub Kamu */
             background-image: url('https://raw.githubusercontent.com/delonix007/cryptodelonix/refs/heads/main/bg.png'); 
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
 
+        /* --- CONTAINER UTAMA --- */
         .container {
             width: 100%; max-width: 850px;
             background: var(--glass-panel);
@@ -60,17 +64,15 @@
         h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; text-transform: uppercase; }
         p { color: var(--text-muted); margin-top: 8px; font-size: 14px; }
 
+        /* --- FORM STYLES --- */
         .input-group { margin-bottom: 40px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .full-width { grid-column: span 2; }
 
         label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* INPUT & TEXTAREA STYLE */
         input[type="text"], input[type="url"], select {
-            width: 100%; 
-            height: 54px; /* FIXED HEIGHT */
-            padding: 0 20px; 
+            width: 100%; height: 54px; padding: 0 20px; 
             background: var(--glass-input); border: 1px solid var(--glass-border); border-radius: 4px;
             color: var(--text-main); font-size: 14px; outline: none;
             transition: border-color 0.3s, background-color 0.3s;
@@ -91,39 +93,18 @@
             box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
         }
 
-        /* --- FIXED CHECKBOX STYLE --- */
+        /* --- CHECKBOX STYLE (FIXED) --- */
         .checkbox-wrapper {
             display: flex; align-items: center; gap: 12px;
-            background: var(--glass-input); 
-            height: 54px; 
-            padding: 0 20px;
-            border-radius: 4px; 
-            border: 1px solid var(--glass-border);
+            background: var(--glass-input); height: 54px; padding: 0 20px;
+            border-radius: 4px; border: 1px solid var(--glass-border);
             transition: border-color 0.3s, background-color 0.3s;
-            cursor: pointer;
-            width: 100%;
-            user-select: none;
+            cursor: pointer; width: 100%; user-select: none;
         }
+        .checkbox-wrapper:hover { background: rgba(30, 41, 59, 0.6); border-color: #6200ea; }
         
-        .checkbox-wrapper:hover {
-            background: rgba(30, 41, 59, 0.6); 
-            border-color: #6200ea;
-        }
-
-        input[type="checkbox"] { 
-            width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; 
-            padding: 0; margin: 0; 
-            appearance: auto;
-        }
-        
-        .checkbox-label { 
-            margin: 0; cursor: pointer; 
-            font-size: 14px; 
-            color: var(--text-main); 
-            font-weight: 400;
-            text-transform: none; 
-            letter-spacing: 0;
-        }
+        input[type="checkbox"] { width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; padding: 0; margin: 0; appearance: auto; }
+        .checkbox-label { margin: 0; cursor: pointer; font-size: 14px; color: var(--text-main); font-weight: 400; text-transform: none; letter-spacing: 0; }
 
         select {
             appearance: none; -webkit-appearance: none; cursor: pointer;
@@ -132,7 +113,6 @@
         }
         select option { background: #0f172a; color: white; padding: 10px; }
 
-        /* BUTTON SUBMIT */
         .btn-save {
             width: 100%; padding: 20px; margin-top: 15px;
             background: var(--primary-grad); color: white; font-weight: 700; font-size: 16px; letter-spacing: 1px;
@@ -145,16 +125,13 @@
         .btn-save:active { transform: scale(0.98); }
         .btn-save:disabled { opacity: 0.7; cursor: wait; transform: none; background: #333; filter: none; }
 
-        /* LIST & CARD */
+        /* --- LIST & CARD STYLES --- */
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
             margin: 50px 0 25px; padding-bottom: 20px; border-bottom: 1px solid var(--glass-border);
         }
         .section-title { font-size: 16px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
-        .badge-count { 
-            background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 4px; 
-            color: var(--text-muted); font-size: 12px; font-weight: 600; border: 1px solid var(--glass-border); 
-        }
+        .badge-count { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 4px; color: var(--text-muted); font-size: 12px; font-weight: 600; border: 1px solid var(--glass-border); }
 
         .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
@@ -166,22 +143,16 @@
         .card:hover { transform: translateY(-5px); background: rgba(30, 41, 59, 0.6); border-color: #6200ea; }
 
         .card-top { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .keyword-pill { 
-            background: rgba(98, 0, 234, 0.15); color: #b388ff; padding: 6px 12px; 
-            border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid rgba(98, 0, 234, 0.3);
-        }
+        .keyword-pill { background: rgba(98, 0, 234, 0.15); color: #b388ff; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; border: 1px solid rgba(98, 0, 234, 0.3); }
         .status-badge { font-size: 11px; font-weight: 600; display: flex; align-items: center; color: var(--text-muted); }
         .st-Active { color: var(--success); }
         
         .card h3 { color: var(--text-main); margin-bottom: 8px; font-size: 16px; font-weight: 700; }
         .source { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
 
-        .notes-box {
-            background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px;
-            margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1;
-        }
+        .notes-box { background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px; margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1; }
 
-        .action-row { display: flex; gap: 12px; margin-top: auto; }
+        .action-row { display: flex; gap: 8px; margin-top: auto; }
         
         .btn-link {
             flex: 1; text-decoration: none; text-align: center;
@@ -190,25 +161,19 @@
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
-        /* Icon Buttons */
-        .btn-icon {
-            width: 45px; height: 45px; flex-shrink: 0; border-radius: 4px; font-size: 16px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent;
-        }
-
-        /* Tombol Delete (Merah) */
+        /* Tombol Ikon (Edit & Delete) */
+        .btn-icon { width: 45px; height: 45px; flex-shrink: 0; border-radius: 4px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent; }
+        
+        /* Warna Tombol Ikon */
         .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
-
-        /* Tombol Edit Note (Kuning) */
+        
         .btn-edit { background: rgba(251, 191, 36, 0.1); color: #fcd34d; border-color: rgba(251, 191, 36, 0.2); }
         .btn-edit:hover { background: rgba(251, 191, 36, 0.25); border-color: var(--warning); color: white; }
-
-        /* Tombol Edit Link (Biru Langit) */
+        
         .btn-edit-link { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
         .btn-edit-link:hover { background: rgba(56, 189, 248, 0.25); border-color: var(--info); color: white; }
-
-        /* Tombol Edit Keyword (Ungu) - BARU */
+        
         .btn-edit-keyword { background: rgba(192, 132, 252, 0.1); color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
         .btn-edit-keyword:hover { background: rgba(192, 132, 252, 0.25); border-color: var(--purple); color: white; }
 
@@ -240,13 +205,23 @@
                     <input type="text" id="keyword" placeholder="Contoh: Avon" required>
                 </div>
                 <div>
-                    <label>Source ID</label>
+                    <label>Source ID (Username Channel Tanpa @)</label>
                     <input type="text" id="source" placeholder="airdropfind" required>
                 </div>
+                
                 <div class="full-width">
-                    <label>Link Garapan</label>
+                    <label>Link Garapan (Direct Website)</label>
                     <input type="url" id="link" placeholder="https://..." required>
                 </div>
+
+                <div class="full-width">
+                    <label>Link Post Telegram (Untuk Akurasi Bot)</label>
+                    <input type="url" id="telePostLink" placeholder="Contoh: https://t.me/airdropfind/12345">
+                    <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">
+                        *Masukkan link post utama agar bot tahu harus mulai memantau reply dari mana.
+                    </small>
+                </div>
+
                 <div class="full-width">
                     <label>Keterangan / Catatan (Opsional)</label>
                     <textarea id="notes" placeholder="Tulis info tambahan, misal: Wajib tx seminggu sekali..."></textarea>
@@ -293,7 +268,7 @@
     import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // CONFIG FIREBASE KAMU
+    // FIREBASE CONFIG USER
     const firebaseConfig = {
       apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
       authDomain: "cryptodelonix.firebaseapp.com",
@@ -307,6 +282,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // --- RENDER DATA ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
@@ -354,66 +330,48 @@
                 </div>
             `;
 
-            // 1. TOMBOL EDIT LINK (BIRU LANGIT)
+            // --- TOMBOL-TOMBOL AKSI ---
+            
+            // 1. Edit Link (Biru)
             const editLinkBtn = document.createElement('button');
             editLinkBtn.className = 'btn-icon btn-edit-link';
             editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
-            editLinkBtn.title = "Sunting Link";
+            editLinkBtn.title = "Sunting Link Garapan";
             editLinkBtn.onclick = async () => {
-                const currentLink = data.link || "";
-                const newLink = prompt("Edit Link Garapan:", currentLink);
-                if (newLink !== null) {
-                    try {
-                        await updateDoc(doc(db, "airdrops", docId), { link: newLink });
-                    } catch (err) {
-                        alert("Gagal update link: " + err.message);
-                    }
-                }
+                const newLink = prompt("Edit Link Garapan (Direct Link):", data.link || "");
+                if (newLink !== null) try { await updateDoc(doc(db, "airdrops", docId), { link: newLink }); } catch (err) { alert(err.message); }
             };
 
-            // 2. TOMBOL EDIT KEYWORD (UNGU - BARU)
+            // 2. Edit Keyword (Ungu)
             const editKeywordBtn = document.createElement('button');
             editKeywordBtn.className = 'btn-icon btn-edit-keyword';
-            editKeywordBtn.innerHTML = '<i class="fas fa-tag"></i>'; // Ikon Tag untuk Keyword
-            editKeywordBtn.title = "Sunting Keyword";
+            editKeywordBtn.innerHTML = '<i class="fas fa-tag"></i>';
+            editKeywordBtn.title = "Sunting Keyword Bot";
             editKeywordBtn.onclick = async () => {
-                const currentKeyword = data.search_keyword || "";
-                const newKeyword = prompt("Edit Keyword Bot:", currentKeyword);
-                if (newKeyword !== null) {
-                    try {
-                        await updateDoc(doc(db, "airdrops", docId), { search_keyword: newKeyword.trim() });
-                    } catch (err) {
-                        alert("Gagal update keyword: " + err.message);
-                    }
-                }
+                const newKw = prompt("Edit Keyword Bot:", data.search_keyword || "");
+                if (newKw !== null) try { await updateDoc(doc(db, "airdrops", docId), { search_keyword: newKw.trim() }); } catch (err) { alert(err.message); }
             };
 
-            // 3. TOMBOL EDIT NOTE (KUNING)
+            // 3. Edit Note (Kuning)
             const editBtn = document.createElement('button');
             editBtn.className = 'btn-icon btn-edit';
             editBtn.innerHTML = '<i class="fas fa-pen"></i>';
             editBtn.title = "Sunting Keterangan";
             editBtn.onclick = async () => {
-                const currentNote = data.notes || "";
-                const newNote = prompt("Edit Keterangan / Catatan:", currentNote);
-                if (newNote !== null) {
-                    try {
-                        await updateDoc(doc(db, "airdrops", docId), { notes: newNote });
-                    } catch (err) {
-                        alert("Gagal update: " + err.message);
-                    }
-                }
+                const newNote = prompt("Edit Keterangan / Catatan:", data.notes || "");
+                if (newNote !== null) try { await updateDoc(doc(db, "airdrops", docId), { notes: newNote }); } catch (err) { alert(err.message); }
             };
 
-            // 4. TOMBOL DELETE (MERAH)
+            // 4. Delete (Merah)
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            delBtn.title = "Hapus Data";
             delBtn.onclick = async () => {
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
-            // Masukkan tombol ke action row (Urutan: Link -> Keyword -> Note -> Delete)
+            // Masukkan tombol ke baris aksi
             const actionRow = card.querySelector('.action-row');
             actionRow.appendChild(editLinkBtn);
             actionRow.appendChild(editKeywordBtn);
@@ -424,6 +382,7 @@
         });
     });
 
+    // --- SUBMIT LOGIC DENGAN EXTRACTION ID ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
@@ -431,6 +390,15 @@
         
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> PROCESSING...'; 
         btn.disabled = true;
+
+        // --- EKSTRAKSI ID TELEGRAM ---
+        const teleUrl = document.getElementById('telePostLink').value;
+        let extractedId = null;
+        if (teleUrl) {
+            // Regex: Ambil angka terakhir (contoh: t.me/c/1234/999 -> 999)
+            const match = teleUrl.match(/\/(\d+)(\?|$)/);
+            if (match) extractedId = match[1];
+        }
 
         try {
             await addDoc(collection(db, "airdrops"), {
@@ -441,8 +409,12 @@
                 notes: document.getElementById('notes').value,
                 status: document.getElementById('status').value,
                 isDailyReminder: document.getElementById('dailyReminder').checked,
+                
+                // SIMPAN ID START UNTUK BOT
+                tracked_msg_id: extractedId, 
+                
                 createdAt: new Date(),
-                last_message_snippet: "", tracked_msg_id: null 
+                last_message_snippet: "" 
             });
             
             e.target.reset();
