@@ -9,27 +9,25 @@
     
     <style>
         :root {
-            /* --- COLOR PALETTE --- */
+            /* --- THEME COLORS --- */
             --bg-dark: #0f172a; 
             --primary-grad: linear-gradient(135deg, #6200ea 0%, #304ffe 100%);
             --primary-solid: #304ffe;
             
-            /* GLASS EFFECT */
+            /* GLASS VARIABLES */
             --glass-panel: rgba(15, 23, 42, 0.65); 
             --glass-input: rgba(255, 255, 255, 0.05);
             --glass-card: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.1);
             
-            /* TEXT COLORS */
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            
-            /* STATUS COLORS */
             --success: #00e676; 
             --danger: #ff1744;
             --warning: #fbbf24;
-            --info: #38bdf8; /* Biru Langit (Link) */
-            --purple: #c084fc; /* Ungu (Keyword) */
+            --info: #38bdf8; 
+            --purple: #c084fc; 
+            --tele: #229ED9; /* Warna Telegram Resmi */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
@@ -38,12 +36,10 @@
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 30px 20px;
             background-color: var(--bg-dark);
-            /* Background Image dari GitHub Kamu */
             background-image: url('https://raw.githubusercontent.com/delonix007/cryptodelonix/refs/heads/main/bg.png'); 
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
 
-        /* --- CONTAINER UTAMA --- */
         .container {
             width: 100%; max-width: 850px;
             background: var(--glass-panel);
@@ -64,7 +60,6 @@
         h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; text-transform: uppercase; }
         p { color: var(--text-muted); margin-top: 8px; font-size: 14px; }
 
-        /* --- FORM STYLES --- */
         .input-group { margin-bottom: 40px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .full-width { grid-column: span 2; }
@@ -93,7 +88,6 @@
             box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
         }
 
-        /* --- CHECKBOX STYLE (FIXED) --- */
         .checkbox-wrapper {
             display: flex; align-items: center; gap: 12px;
             background: var(--glass-input); height: 54px; padding: 0 20px;
@@ -102,7 +96,6 @@
             cursor: pointer; width: 100%; user-select: none;
         }
         .checkbox-wrapper:hover { background: rgba(30, 41, 59, 0.6); border-color: #6200ea; }
-        
         input[type="checkbox"] { width: 18px; height: 18px; accent-color: #6200ea; cursor: pointer; padding: 0; margin: 0; appearance: auto; }
         .checkbox-label { margin: 0; cursor: pointer; font-size: 14px; color: var(--text-main); font-weight: 400; text-transform: none; letter-spacing: 0; }
 
@@ -125,7 +118,6 @@
         .btn-save:active { transform: scale(0.98); }
         .btn-save:disabled { opacity: 0.7; cursor: wait; transform: none; background: #333; filter: none; }
 
-        /* --- LIST & CARD STYLES --- */
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
             margin: 50px 0 25px; padding-bottom: 20px; border-bottom: 1px solid var(--glass-border);
@@ -152,19 +144,18 @@
 
         .notes-box { background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px; margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1; }
 
-        .action-row { display: flex; gap: 8px; margin-top: auto; }
+        .action-row { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
         
         .btn-link {
-            flex: 1; text-decoration: none; text-align: center;
+            flex: 1; text-decoration: none; text-align: center; white-space: nowrap;
             background: rgba(255,255,255,0.05); color: var(--text-main); padding: 12px; border-radius: 4px; 
             font-weight: 600; font-size: 13px; border: 1px solid var(--glass-border); transition: 0.2s;
         }
         .btn-link:hover { background: rgba(255,255,255,0.1); border-color: var(--primary-solid); }
         
-        /* Tombol Ikon (Edit & Delete) */
-        .btn-icon { width: 45px; height: 45px; flex-shrink: 0; border-radius: 4px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent; }
+        .btn-icon { width: 42px; height: 42px; flex-shrink: 0; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent; }
         
-        /* Warna Tombol Ikon */
+        /* WARNA TOMBOL IKON */
         .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
         
@@ -176,6 +167,10 @@
         
         .btn-edit-keyword { background: rgba(192, 132, 252, 0.1); color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
         .btn-edit-keyword:hover { background: rgba(192, 132, 252, 0.25); border-color: var(--purple); color: white; }
+
+        /* Tombol Baru: Edit Telegram ID (Biru Telegram) */
+        .btn-edit-tele { background: rgba(34, 158, 217, 0.1); color: #229ED9; border-color: rgba(34, 158, 217, 0.2); }
+        .btn-edit-tele:hover { background: rgba(34, 158, 217, 0.25); border-color: #229ED9; color: white; }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -218,7 +213,7 @@
                     <label>Link Post Telegram (Untuk Akurasi Bot)</label>
                     <input type="url" id="telePostLink" placeholder="Contoh: https://t.me/airdropfind/12345">
                     <small style="color:var(--text-muted); font-size:11px; margin-top:4px; display:block;">
-                        *Masukkan link post utama agar bot tahu harus mulai memantau reply dari mana.
+                        *Link untuk menentukan Start ID (titik awal pantauan bot).
                     </small>
                 </div>
 
@@ -268,7 +263,6 @@
     import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // FIREBASE CONFIG USER
     const firebaseConfig = {
       apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
       authDomain: "cryptodelonix.firebaseapp.com",
@@ -282,7 +276,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // --- RENDER DATA ---
     const q = query(collection(db, "airdrops"), orderBy("createdAt", "desc"));
     
     onSnapshot(q, (snapshot) => {
@@ -300,12 +293,12 @@
             const data = documentSnapshot.data();
             const docId = documentSnapshot.id;
             const searchKey = data.search_keyword || data.name;
-
-            const reminderIcon = data.isDailyReminder ? 
-                `<i class="fas fa-bell" style="color:#fbbf24; margin-left:8px;" title="Daily Reminder"></i>` : '';
-
+            const reminderIcon = data.isDailyReminder ? `<i class="fas fa-bell" style="color:#fbbf24; margin-left:8px;" title="Daily Reminder"></i>` : '';
             const notesText = data.notes && data.notes.trim() !== "" ? data.notes : "Tidak ada keterangan.";
             const notesHtml = `<div class="notes-box"><i class="far fa-sticky-note" style="margin-right:5px; opacity:0.7;"></i> ${notesText}</div>`;
+
+            // Info ID Pantauan (Opsional, buat debug)
+            // const trackIdDisplay = data.tracked_msg_id ? `<span style="font-size:10px; color:#64748b; display:block; margin-top:4px;">Tracking ID: ${data.tracked_msg_id}</span>` : '';
 
             const card = document.createElement('div');
             card.className = 'card';
@@ -330,50 +323,71 @@
                 </div>
             `;
 
-            // --- TOMBOL-TOMBOL AKSI ---
-            
-            // 1. Edit Link (Biru)
+            // --- KUMPULAN TOMBOL EDIT ---
+
+            // 1. Edit Link (Biru Langit)
             const editLinkBtn = document.createElement('button');
             editLinkBtn.className = 'btn-icon btn-edit-link';
             editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
             editLinkBtn.title = "Sunting Link Garapan";
             editLinkBtn.onclick = async () => {
-                const newLink = prompt("Edit Link Garapan (Direct Link):", data.link || "");
+                const newLink = prompt("Edit Link Garapan:", data.link || "");
                 if (newLink !== null) try { await updateDoc(doc(db, "airdrops", docId), { link: newLink }); } catch (err) { alert(err.message); }
             };
 
-            // 2. Edit Keyword (Ungu)
+            // 2. Edit Telegram Start ID (BARU - Biru Telegram)
+            const editTeleBtn = document.createElement('button');
+            editTeleBtn.className = 'btn-icon btn-edit-tele';
+            editTeleBtn.innerHTML = '<i class="fab fa-telegram-plane"></i>';
+            editTeleBtn.title = "Sunting Start ID Telegram";
+            editTeleBtn.onclick = async () => {
+                const newLink = prompt("Masukkan Link Post Telegram Baru (untuk reset Start ID):", "");
+                if (newLink !== null && newLink.trim() !== "") {
+                    const match = newLink.match(/\/(\d+)(\?|$)/);
+                    if (match) {
+                        try {
+                            await updateDoc(doc(db, "airdrops", docId), { tracked_msg_id: match[1] });
+                            alert(`Berhasil update Start ID ke: ${match[1]}`);
+                        } catch (err) { alert("Gagal update: " + err.message); }
+                    } else {
+                        alert("Link tidak valid! Pastikan link post telegram mengandung angka.");
+                    }
+                }
+            };
+
+            // 3. Edit Keyword (Ungu)
             const editKeywordBtn = document.createElement('button');
             editKeywordBtn.className = 'btn-icon btn-edit-keyword';
             editKeywordBtn.innerHTML = '<i class="fas fa-tag"></i>';
-            editKeywordBtn.title = "Sunting Keyword Bot";
+            editKeywordBtn.title = "Sunting Keyword";
             editKeywordBtn.onclick = async () => {
                 const newKw = prompt("Edit Keyword Bot:", data.search_keyword || "");
                 if (newKw !== null) try { await updateDoc(doc(db, "airdrops", docId), { search_keyword: newKw.trim() }); } catch (err) { alert(err.message); }
             };
 
-            // 3. Edit Note (Kuning)
+            // 4. Edit Note (Kuning)
             const editBtn = document.createElement('button');
             editBtn.className = 'btn-icon btn-edit';
             editBtn.innerHTML = '<i class="fas fa-pen"></i>';
             editBtn.title = "Sunting Keterangan";
             editBtn.onclick = async () => {
-                const newNote = prompt("Edit Keterangan / Catatan:", data.notes || "");
+                const newNote = prompt("Edit Keterangan:", data.notes || "");
                 if (newNote !== null) try { await updateDoc(doc(db, "airdrops", docId), { notes: newNote }); } catch (err) { alert(err.message); }
             };
 
-            // 4. Delete (Merah)
+            // 5. Delete (Merah)
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            delBtn.title = "Hapus Data";
+            delBtn.title = "Hapus";
             delBtn.onclick = async () => {
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
-            // Masukkan tombol ke baris aksi
+            // Append Buttons
             const actionRow = card.querySelector('.action-row');
             actionRow.appendChild(editLinkBtn);
+            actionRow.appendChild(editTeleBtn); // Tombol baru masuk sini
             actionRow.appendChild(editKeywordBtn);
             actionRow.appendChild(editBtn);
             actionRow.appendChild(delBtn);
@@ -382,7 +396,6 @@
         });
     });
 
-    // --- SUBMIT LOGIC DENGAN EXTRACTION ID ---
     document.getElementById('addForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.querySelector('.btn-save');
@@ -391,11 +404,10 @@
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> PROCESSING...'; 
         btn.disabled = true;
 
-        // --- EKSTRAKSI ID TELEGRAM ---
+        // EXTRACTION ID SAAT INPUT BARU
         const teleUrl = document.getElementById('telePostLink').value;
         let extractedId = null;
         if (teleUrl) {
-            // Regex: Ambil angka terakhir (contoh: t.me/c/1234/999 -> 999)
             const match = teleUrl.match(/\/(\d+)(\?|$)/);
             if (match) extractedId = match[1];
         }
@@ -409,10 +421,7 @@
                 notes: document.getElementById('notes').value,
                 status: document.getElementById('status').value,
                 isDailyReminder: document.getElementById('dailyReminder').checked,
-                
-                // SIMPAN ID START UNTUK BOT
                 tracked_msg_id: extractedId, 
-                
                 createdAt: new Date(),
                 last_message_snippet: "" 
             });
