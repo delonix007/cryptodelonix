@@ -25,7 +25,8 @@
             --success: #00e676; 
             --danger: #ff1744;
             --warning: #fbbf24;
-            --info: #38bdf8; /* Warna Biru Langit untuk Edit Link */
+            --info: #38bdf8; /* Biru Langit (Link) */
+            --purple: #c084fc; /* Ungu (Keyword) */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; }
@@ -203,9 +204,13 @@
         .btn-edit { background: rgba(251, 191, 36, 0.1); color: #fcd34d; border-color: rgba(251, 191, 36, 0.2); }
         .btn-edit:hover { background: rgba(251, 191, 36, 0.25); border-color: var(--warning); color: white; }
 
-        /* Tombol Edit Link (Biru Langit) - BARU */
+        /* Tombol Edit Link (Biru Langit) */
         .btn-edit-link { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
         .btn-edit-link:hover { background: rgba(56, 189, 248, 0.25); border-color: var(--info); color: white; }
+
+        /* Tombol Edit Keyword (Ungu) - BARU */
+        .btn-edit-keyword { background: rgba(192, 132, 252, 0.1); color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
+        .btn-edit-keyword:hover { background: rgba(192, 132, 252, 0.25); border-color: var(--purple); color: white; }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -288,6 +293,7 @@
     import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy } 
     from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+    // CONFIG FIREBASE KAMU
     const firebaseConfig = {
       apiKey: "AIzaSyDJwLno6mR7X1MNHyn3gRYagduOohmgcWQ",
       authDomain: "cryptodelonix.firebaseapp.com",
@@ -348,7 +354,7 @@
                 </div>
             `;
 
-            // 1. TOMBOL EDIT LINK (BARU - BIRU LANGIT)
+            // 1. TOMBOL EDIT LINK (BIRU LANGIT)
             const editLinkBtn = document.createElement('button');
             editLinkBtn.className = 'btn-icon btn-edit-link';
             editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
@@ -365,7 +371,24 @@
                 }
             };
 
-            // 2. TOMBOL EDIT NOTE (KUNING)
+            // 2. TOMBOL EDIT KEYWORD (UNGU - BARU)
+            const editKeywordBtn = document.createElement('button');
+            editKeywordBtn.className = 'btn-icon btn-edit-keyword';
+            editKeywordBtn.innerHTML = '<i class="fas fa-tag"></i>'; // Ikon Tag untuk Keyword
+            editKeywordBtn.title = "Sunting Keyword";
+            editKeywordBtn.onclick = async () => {
+                const currentKeyword = data.search_keyword || "";
+                const newKeyword = prompt("Edit Keyword Bot:", currentKeyword);
+                if (newKeyword !== null) {
+                    try {
+                        await updateDoc(doc(db, "airdrops", docId), { search_keyword: newKeyword.trim() });
+                    } catch (err) {
+                        alert("Gagal update keyword: " + err.message);
+                    }
+                }
+            };
+
+            // 3. TOMBOL EDIT NOTE (KUNING)
             const editBtn = document.createElement('button');
             editBtn.className = 'btn-icon btn-edit';
             editBtn.innerHTML = '<i class="fas fa-pen"></i>';
@@ -382,7 +405,7 @@
                 }
             };
 
-            // 3. TOMBOL DELETE (MERAH)
+            // 4. TOMBOL DELETE (MERAH)
             const delBtn = document.createElement('button');
             delBtn.className = 'btn-icon btn-delete';
             delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
@@ -390,9 +413,10 @@
                 if(confirm(`Hapus ${data.name}?`)) await deleteDoc(doc(db, "airdrops", docId));
             };
 
-            // Masukkan tombol ke action row
+            // Masukkan tombol ke action row (Urutan: Link -> Keyword -> Note -> Delete)
             const actionRow = card.querySelector('.action-row');
             actionRow.appendChild(editLinkBtn);
+            actionRow.appendChild(editKeywordBtn);
             actionRow.appendChild(editBtn);
             actionRow.appendChild(delBtn);
 
