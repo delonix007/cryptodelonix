@@ -43,7 +43,7 @@
         /* --- CONTAINER UTAMA (900px) --- */
         .container {
             width: 100%; 
-            max-width: 900px; /* DIGANTI JADI 900px */
+            max-width: 900px; 
             background: var(--glass-panel);
             backdrop-filter: blur(40px) saturate(120%); -webkit-backdrop-filter: blur(40px) saturate(120%);
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 50px;
@@ -144,7 +144,24 @@
         .card h3 { color: var(--text-main); margin-bottom: 8px; font-size: 16px; font-weight: 700; }
         .source { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
 
-        .notes-box { background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px; margin-bottom: 20px; border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; white-space: pre-wrap; flex-grow: 1; }
+        /* --- PERBAIKAN NOTES BOX AGAR TIDAK JEBOL --- */
+        .notes-box { 
+            background: rgba(0, 0, 0, 0.2); 
+            border-left: 3px solid var(--primary-solid); 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            color: #e2e8f0; 
+            line-height: 1.4; 
+            
+            /* Logic Wrapping Text */
+            white-space: pre-wrap;      /* Pertahankan Enter */
+            word-break: break-word;     /* Paksa potong kata panjang/link */
+            overflow-wrap: break-word;  /* Support browser modern */
+            
+            flex-grow: 1; 
+        }
 
         .action-row { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
         
