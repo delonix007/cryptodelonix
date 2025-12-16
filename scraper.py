@@ -1,82 +1,121 @@
 import os
 import requests
 import re
-import firebase_admin
+import time
 from bs4 import BeautifulSoup
+import firebase_admin
 from firebase_admin import credentials, firestore
 
-# ... (Bagian Konfigurasi & Init Firebase sama seperti sebelumnya) ...
+# --- KONFIGURASI ---
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+
+if not firebase_admin._apps:
+    if os.path.exists("firebase_key.json"):
+        cred = credentials.Certificate("firebase_key.json") 
+        firebase_admin.initialize_app(cred)
+    else:
+        # Fallback jika pakai ENV variable encoded base64/json langsung
+        firebase_admin.initialize_app()
+
+db = firestore.client()
+
+def send_telegram_alert(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown", "disable_web_page_preview": True}
+    try:
+        requests.post(url, json=payload)
+    except Exception as e:
+        print(f"Gagal kirim telegram: {e}")
+
+def extract_id_from_url(url_string):
+    """Mengambil ID angka dari link t.me"""
+    if not url_string: return None
+    match = re.search(r'/(\d+)(\?|$)', url_string)
+    return match.group(1) if match else None
 
 def check_updates():
-    print("--- MULAI HYBRID SCRAPING ---")
+    print("--- MULAI DEEP SCRAPING ---")
     
-    # Ambil data Active
-    docs = db.collection('airdrops').where('status', '==', 'Active').stream()
+    try:
+        docs = db.collection('airdrops').where('status', '==', 'Active').stream()
+    except Exception as e:
+        print(f"Error Koneksi Database: {e}")
+        return
 
     for doc in docs:
         data = doc.to_dict()
-        project_name = data.get('name')
-        source_channel = data.get('source')
+        project_name = data.get('name', 'Unknown')
+        source_channel = data.get('source', '')
         
-        # Ambil Keyword & ID
+        # KEYPOINT: Pastikan tracked_msg_id selalu String untuk perbandingan
+        tracked_msg_id = str(data.get('tracked_msg_id', ''))
         search_keyword = data.get('search_keyword', '').lower()
-        tracked_msg_id = str(data.get('tracked_msg_id', '')) # Pastikan string
         
-        print(f"\n🔍 Tracking: {project_name} | Key: {search_keyword} | ID: {tracked_msg_id}")
+        if not source_channel: continue
+
+        print(f"\n🔍 Cek: {project_name} (@{source_channel}) | TrackID: {tracked_msg_id}")
         
         url = f"https://t.me/s/{source_channel}"
         
         try:
-            r = requests.get(url, timeout=20)
+            # User Agent agar tidak diblokir Telegram Web
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+            r = requests.get(url, headers=headers, timeout=30)
             soup = BeautifulSoup(r.text, 'html.parser')
             
-            # Ambil 15 pesan terakhir
+            # AMBIL 30 PESAN TERAKHIR (Lebih banyak dari sebelumnya)
             messages = soup.find_all('div', class_='tgme_widget_message_wrap')
-            
-            # Loop dari pesan terlama ke terbaru (agar alur update runtut)
-            for msg_wrap in messages:
+            if not messages:
+                print("   ⚠️ Channel tidak ditemukan atau kosong.")
+                continue
+
+            recent_messages = messages[-30:] # Scan 30 pesan terakhir
+
+            for msg_wrap in recent_messages:
                 msg_div = msg_wrap.find('div', class_='tgme_widget_message')
                 if not msg_div: continue
                 
-                # 1. Dapatkan ID Pesan Ini
-                post_link = msg_div.get('data-post') 
+                # 1. ID Pesan Saat Ini
+                post_link = msg_div.get('data-post')
                 current_msg_id = extract_id_from_url(post_link)
                 if not current_msg_id: continue
 
-                # Skip jika pesan ini <= pesan yang terakhir kita simpan (sudah lama)
-                # (Logic sederhana: anggap ID makin besar makin baru)
-                if tracked_msg_id and current_msg_id.isdigit() and tracked_msg_id.isdigit():
+                # Skip jika pesan ini lebih lama/sama dengan yang sudah dilacak (Logic ID Increment)
+                # Hanya valid jika tracked_msg_id berisi angka valid
+                if tracked_msg_id.isdigit() and current_msg_id.isdigit():
                     if int(current_msg_id) <= int(tracked_msg_id):
-                        continue 
+                        continue
 
-                # 2. Dapatkan Text & Reply ID
+                # 2. Ambil Text
                 text_div = msg_wrap.find('div', class_='tgme_widget_message_text')
-                raw_text = text_div.get_text(separator=' ', strip=True) if text_div else ""
+                raw_text = text_div.get_text(separator=' ', strip=True) if text_div else "[Media/Foto]"
                 text_lower = raw_text.lower()
-                
-                reply_div = msg_wrap.find('a', class_='tgme_widget_message_reply')
-                reply_to_id = extract_id_from_url(reply_div.get('href')) if reply_div else None
 
-                # --- INI LOGIKA HYBRID-NYA ---
-                match_found = False
+                # 3. Cek Reply ID
+                reply_div = msg_wrap.find('a', class_='tgme_widget_message_reply')
+                reply_to_id = None
+                if reply_div:
+                    reply_href = reply_div.get('href')
+                    reply_to_id = extract_id_from_url(reply_href)
+
+                # --- MATCHING LOGIC (STRING to STRING) ---
+                is_match = False
                 match_reason = ""
 
-                # CEK 1: Apakah dia Reply ke ID yang kita pantau? (Akurasi Tinggi)
-                if tracked_msg_id and reply_to_id == tracked_msg_id:
-                    match_found = True
-                    match_reason = "Reply ke Thread Utama"
-
-                # CEK 2: Apakah dia mengandung Keyword? (Backup Plan)
-                # Dijalankan jika Admin membuat post baru (bukan reply)
+                # Cek Reply (Pastikan kedua sisi adalah STRING)
+                if tracked_msg_id and reply_to_id and str(reply_to_id) == str(tracked_msg_id):
+                    is_match = True
+                    match_reason = f"Reply ke Post Utama ({tracked_msg_id})"
+                
+                # Cek Keyword
                 elif search_keyword and search_keyword in text_lower:
-                    match_found = True
+                    is_match = True
                     match_reason = f"Keyword '{search_keyword}' ditemukan"
 
-                # --- EKSEKUSI ---
-                if match_found:
-                    print(f"   ✅ UPDATE BARU! ID: {current_msg_id} ({match_reason})")
+                if is_match:
+                    print(f"   ✅ HIT! ID: {current_msg_id} | {match_reason}")
                     
-                    # 1. Kirim Telegram
                     msg = (
                         f"🚨 **UPDATE: {project_name}**\n"
                         f"Info: {match_reason}\n\n"
@@ -84,19 +123,18 @@ def check_updates():
                         f"[Buka Pesan](https://t.me/{source_channel}/{current_msg_id})"
                     )
                     send_telegram_alert(msg)
-
-                    # 2. AUTO-SWITCH ID (PENTING!)
-                    # Kita update 'tracked_msg_id' di database ke ID pesan BARU ini.
-                    # Jadi jika nanti admin me-reply pesan baru ini, kita tetap bisa detect.
+                    
+                    # AUTO SWITCH ID: Pindah pantauan ke pesan baru ini
                     doc.reference.update({
-                        'tracked_msg_id': current_msg_id,
+                        'tracked_msg_id': str(current_msg_id),
                         'last_message_snippet': raw_text[:50]
                     })
                     
-                    # Update variabel lokal agar loop selanjutnya membandingkan dengan ID baru ini
-                    tracked_msg_id = current_msg_id
+                    # Update local var agar tidak spam notif di loop yang sama
+                    tracked_msg_id = str(current_msg_id)
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"   ❌ Error: {e}")
 
-# ... (Fungsi helper lainnya sama)
+if __name__ == "__main__":
+    check_updates()
