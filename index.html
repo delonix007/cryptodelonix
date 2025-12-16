@@ -40,10 +40,9 @@
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
 
-        /* --- CONTAINER UTAMA (900px) --- */
+        /* CONTAINER 900px */
         .container {
-            width: 100%; 
-            max-width: 900px; 
+            width: 100%; max-width: 900px;
             background: var(--glass-panel);
             backdrop-filter: blur(40px) saturate(120%); -webkit-backdrop-filter: blur(40px) saturate(120%);
             border: 1px solid var(--glass-border); border-radius: 20px; padding: 50px;
@@ -84,11 +83,7 @@
         }
 
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
-        
-        input:focus, select:focus, textarea:focus {
-            background: rgba(30, 41, 59, 0.6); border-color: #6200ea;
-            box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2);
-        }
+        input:focus, select:focus, textarea:focus { background: rgba(30, 41, 59, 0.6); border-color: #6200ea; box-shadow: 0 0 0 4px rgba(98, 0, 234, 0.2); }
 
         .checkbox-wrapper {
             display: flex; align-items: center; gap: 12px;
@@ -144,28 +139,15 @@
         .card h3 { color: var(--text-main); margin-bottom: 8px; font-size: 16px; font-weight: 700; }
         .source { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
 
-        /* --- PERBAIKAN NOTES BOX AGAR TIDAK JEBOL --- */
+        /* Notes Box (Safe Wrap) */
         .notes-box { 
-            background: rgba(0, 0, 0, 0.2); 
-            border-left: 3px solid var(--primary-solid); 
-            padding: 10px; 
-            margin-bottom: 20px; 
-            border-radius: 4px; 
-            font-size: 12px; 
-            color: #e2e8f0; 
-            line-height: 1.4; 
-            
-            /* Logic Wrapping Text */
-            white-space: pre-wrap;      /* Pertahankan Enter */
-            word-break: break-word;     /* Paksa potong kata panjang/link */
-            overflow-wrap: break-word;  /* Support browser modern */
-            
-            flex-grow: 1; 
+            background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--primary-solid); padding: 10px; margin-bottom: 20px; 
+            border-radius: 4px; font-size: 12px; color: #e2e8f0; line-height: 1.4; 
+            white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; flex-grow: 1; 
         }
 
-        .action-row { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
+        .action-row { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; margin-bottom: 15px; /* Tambah jarak ke tanggal */ }
         
-        /* TOMBOL BUKA (AUTO WIDTH) */
         .btn-link {
             flex: 0 0 auto; width: auto;
             text-decoration: none; text-align: center; white-space: nowrap;
@@ -180,18 +162,21 @@
         
         .btn-delete { background: rgba(255, 23, 68, 0.1); color: #ff8a80; border-color: rgba(255, 23, 68, 0.2); }
         .btn-delete:hover { background: rgba(255, 23, 68, 0.25); border-color: var(--danger); color: white; }
-        
         .btn-edit { background: rgba(251, 191, 36, 0.1); color: #fcd34d; border-color: rgba(251, 191, 36, 0.2); }
         .btn-edit:hover { background: rgba(251, 191, 36, 0.25); border-color: var(--warning); color: white; }
-        
         .btn-edit-link { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
         .btn-edit-link:hover { background: rgba(56, 189, 248, 0.25); border-color: var(--info); color: white; }
-        
         .btn-edit-keyword { background: rgba(192, 132, 252, 0.1); color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
         .btn-edit-keyword:hover { background: rgba(192, 132, 252, 0.25); border-color: var(--purple); color: white; }
-
         .btn-edit-tele { background: rgba(34, 158, 217, 0.1); color: #229ED9; border-color: rgba(34, 158, 217, 0.2); }
         .btn-edit-tele:hover { background: rgba(34, 158, 217, 0.25); border-color: #229ED9; color: white; }
+
+        /* STYLE TANGGAL INPUT (BARU) */
+        .date-info {
+            font-size: 10px; color: #64748b; margin-top: 8px; 
+            border-top: 1px solid var(--glass-border); padding-top: 8px;
+            display: flex; align-items: center; gap: 5px;
+        }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -318,6 +303,20 @@
             const notesText = data.notes && data.notes.trim() !== "" ? data.notes : "Tidak ada keterangan.";
             const notesHtml = `<div class="notes-box"><i class="far fa-sticky-note" style="margin-right:5px; opacity:0.7;"></i> ${notesText}</div>`;
 
+            // FORMAT TANGGAL
+            let dateStr = "Tanggal tidak tersedia";
+            if (data.createdAt) {
+                // Konversi Timestamp Firebase ke Date Object JS
+                const dateObj = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                
+                // Format: Senin, 16 Des 2025, 14:30
+                const options = { 
+                    weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', 
+                    hour: '2-digit', minute: '2-digit' 
+                };
+                dateStr = dateObj.toLocaleDateString('id-ID', options);
+            }
+
             const card = document.createElement('div');
             card.className = 'card';
             
@@ -339,9 +338,13 @@
                         Buka <i class="fas fa-external-link-alt" style="margin-left:5px;"></i>
                     </a>
                 </div>
+
+                <div class="date-info">
+                    <i class="far fa-clock"></i> Diinput: ${dateStr}
+                </div>
             `;
 
-            // --- TOMBOL-TOMBOL ---
+            // BUTTONS
             const editLinkBtn = document.createElement('button');
             editLinkBtn.className = 'btn-icon btn-edit-link';
             editLinkBtn.innerHTML = '<i class="fas fa-link"></i>';
